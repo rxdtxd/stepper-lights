@@ -1,0 +1,3 @@
+terminal access:
+
+sudo avrdude -c arduino -b 57600 -p m328p -P /dev/ttyUSB0 -t -vv 
