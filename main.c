@@ -1,7 +1,8 @@
 // 
 
+#include "main.h"
+
 //#include <inttypes.h>
-#include <avr/io.h>
 //#include <avr/interrupt.h>
 
 #include "iocontrol.h"
@@ -9,18 +10,16 @@
 
 
 int main (void) {
-    // step
-    set_output(DDRD,DDD3);
-    // dir
-    set_output(DDRD,DDD4);
+    set_output(MOTORS_DDR,MOTOR0_STEP_DD);
+    set_output(MOTORS_DDR,MOTOR0_DIR_DD);
 
-    output_low(PORTD,PD3);
-    output_low(PORTD,PD4);
+    output_low(MOTORS_PORT,MOTOR0_STEP);
+    output_low(MOTORS_PORT,MOTOR0_DIR);
 
     while (1) {
-	output_low(PORTD,PD3);
+	output_low(MOTORS_PORT,MOTOR0_STEP);
 	delay(42);
-	output_high(PORTD,PD3);
+	output_high(MOTORS_PORT,MOTOR0_STEP);
 	delay(42);
     }
     
