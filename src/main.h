@@ -8,7 +8,7 @@
 
 // motor control - data direction
 #define MOTORS_DDR DDRD
-#define MOTOR0_STEP_DD DD3
+#define MOTOR0_STEP_DD DDD3
 #define MOTOR0_DIR_DD DDD4
 //#define MOTOR1_STEP_DD DDD?
 //#define MOTOR1_DIR_DD DDD?
@@ -21,8 +21,8 @@
 
 // motor control - output ports
 #define MOTORS_PORT PORTD
-#define MOTOR0_STEP PD3
-#define MOTOR0_DIR PD4
+#define MOTOR0_STEP PD3 // D3 on arduino
+#define MOTOR0_DIR  PD4 // D4 on arduino
 //#define MOTOR1_STEP PD?
 //#define MOTOR1_DIR PD?
 //#define MOTOR2_STEP PD?
@@ -32,4 +32,42 @@
 //#define MOTOR4_STEP PD?
 //#define MOTOR4_DIR PD?
 
-#endif // #define _MAIN_H_
+
+// leds
+// TODO: remove
+#define LED_0 0
+#define LED_1 1
+#define LEDS_DDR DDRD
+#define LED0_DDR DDD5
+#define LED1_DDR DDD6
+
+#define LEDS_PORT PORTD
+#define LEDBASE   PD5
+
+#define leds_init() LEDS_DDR |= _BV(LED0_DDR)|_BV(LED1_DDR)
+#define led_on(led)     LEDS_PORT &= ~(_BV( LEDBASE+led ))
+#define led_off(led)    LEDS_PORT |=   _BV( LEDBASE+led )
+#define led_toggle(led) LEDS_PORT ^=   _BV( LEDBASE+led )
+
+
+// shift register to read in buttons - uses SPI
+#define SHIFTREG_DDR     DDRB
+#define SHIFTREG_LOAD_DD DDB2
+
+#define SHIFTREG_PORT PORTB
+#define SHIFTREG_LOAD PB2 // D10 on arduino (aka SPI_SS)
+
+#define SPI_DDR      DDRB
+#define SPI_SS_DD    DDB2  // ~ slave select
+#define SPI_MOSI_DD  DDB3  // 
+#define SPI_MISO_DD  DDB4  // 
+#define SPI_SCK_DD   DDB5  // clock
+
+#define SPI_PORT     PORTB
+#define SPI_SS       PB2   // D10
+#define SPI_MOSI     PB3   // D11
+#define SPI_MISO     PB4   // D12
+#define SPI_SCK      PB5   // D13
+
+
+#endif /* _MAIN_H_ */
