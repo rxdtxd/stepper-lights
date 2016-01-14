@@ -1,5 +1,8 @@
 // 
 
+#ifndef _MAIN_H_
+#define _MAIN_H_
+
 #include "main.h"
 
 //#include <inttypes.h>
@@ -25,3 +28,5 @@ int main (void) {
     
     return 0;
 }
+
+#endif /* _MAIN_H_ */
