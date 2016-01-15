@@ -51,11 +51,11 @@
 
 
 // shift register to read in buttons - uses SPI
-#define SHIFTREG_DDR     DDRB
-#define SHIFTREG_LOAD_DD DDB2
+/* #define SHIFTREG_DDR     DDRB */
+/* #define SHIFTREG_LOAD_DD DDB2 */
 
-#define SHIFTREG_PORT PORTB
-#define SHIFTREG_LOAD PB2 // D10 on arduino (aka SPI_SS)
+/* #define SHIFTREG_PORT PORTB */
+/* #define SHIFTREG_LOAD PB2 // D10 on arduino (aka SPI_SS) */
 
 #define SPI_DDR      DDRB
 #define SPI_SS_DD    DDB2  // ~ slave select
