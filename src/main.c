@@ -1,12 +1,11 @@
-// 
+// main.c
+// stepper-lights
 
 #include "main.h"
 
-//#include <inttypes.h>
-//#include <avr/interrupt.h>
+#include <util/delay.h>
 
 #include "iocontrol.h"
-#include "fakedelay.h"
 #include "spi.h"
 
 
@@ -24,16 +23,17 @@ int main (void) {
     
     while (1) {
 	// roll motor
-	output_low(MOTORS_PORT,MOTOR0_STEP);
-	delay(42);
-	output_high(MOTORS_PORT,MOTOR0_STEP);
-	delay(42);
+	/* output_low(MOTORS_PORT,MOTOR0_STEP); */
+	/* delay(42); */
+	/* output_high(MOTORS_PORT,MOTOR0_STEP); */
+	/* delay(42); */
 
-	// read into shift registers from buttons
+	// TODO: func() read into shift registers from buttons
 	shiftreg_mode_load();
-	delay(1);
+	_delay_us(0.05); // min 15 ns
 	shiftreg_mode_transmit();
-	delay(1);
+	_delay_us(0.05);
+	
 	// read from shift registers into microcontroller
 	buttons_up = spi_transmit(SPI_TRANSMIT_DUMMY);
 	buttons_down = spi_transmit(SPI_TRANSMIT_DUMMY);
@@ -43,15 +43,13 @@ int main (void) {
 	} else {
 	    led_off(0);
 	}
-
 	if (buttons_down > 0) {
 	    led_on(1);
 	} else {
 	    led_off(1);
 	}
 	
-	// sleep
-	delay(42);
+	_delay_ms(10);
     }
     
     return 0;

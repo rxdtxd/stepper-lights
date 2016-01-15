@@ -25,11 +25,15 @@ inline void spi_init (void) {
     /* set_output(SPI_DDR, SPI_SCK_DD); */
     /* set_output(SPI_DDR, SPI_SS_DD); */
     
-    //output_high(SPI_PORT, SPI_SS);  // ~SS inactive
-    shiftreg_mode_transmit();
+    output_high(SPI_PORT, SPI_SS);  // ~SS inactive
 
-    // Enable SPI, Master, SCK=fosc/128 (TODO: increase SCK)
-    SPCR = _BV(SPE) | _BV(MSTR) | _BV(SPR1) | _BV(SPR0) /* | _BV(CPOL) */ | _BV(CPHA);
+    // Enable SPI, Master, SCK=fosc/128
+    // TODO: increase SCK
+    SPCR = _BV(SPE) | _BV(MSTR) | _BV(SPR1) | _BV(SPR0);
+    // polarity/phase for reading 165
+    SPCR |= _BV(CPOL) /* | _BV(CPHA) */;
+    // LSB first
+    SPCR |= _BV(DORD);
 }
 
 // send and/or receive data

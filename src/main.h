@@ -6,6 +6,8 @@
 
 #include <avr/io.h>
 
+#define F_CPU 16000000
+
 // motor control - data direction
 #define MOTORS_DDR DDRD
 #define MOTOR0_STEP_DD DDD3
@@ -64,10 +66,12 @@
 #define SPI_SCK_DD   DDB5  // clock
 
 #define SPI_PORT     PORTB
-#define SPI_SS       PB2   // D10
-#define SPI_MOSI     PB3   // D11
-#define SPI_MISO     PB4   // D12
-#define SPI_SCK      PB5   // D13
+#define SPI_SS       PORTB2   // D10
+#define SPI_MOSI     PORTB3   // D11
+#define SPI_SCK      PORTB5   // D13
+
+#define SPI_PIN      PINB
+#define SPI_MISO     PINB4   // D12
 
 
 #endif /* _MAIN_H_ */
