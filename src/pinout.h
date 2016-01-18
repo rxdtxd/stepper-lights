@@ -9,8 +9,8 @@
 
 // motor control - data direction
 #define MOTORS_DDR DDRD
-#define MOTOR0_STEP_DD DDD3
-#define MOTOR0_DIR_DD DDD4
+#define MOTOR0_STEP_DD DDD2
+#define MOTOR0_DIR_DD DDD3
 //#define MOTOR1_STEP_DD DDD?
 //#define MOTOR1_DIR_DD DDD?
 //#define MOTOR2_STEP_DD DDD?
@@ -22,8 +22,8 @@
 
 // motor control - output ports
 #define MOTORS_PORT PORTD
-#define MOTOR0_STEP PD3 // D3 on arduino
-#define MOTOR0_DIR  PD4 // D4 on arduino
+#define MOTOR0_STEP PORTD2 // D3 on arduino
+#define MOTOR0_DIR  PORTD3 // D4 on arduino
 //#define MOTOR1_STEP PD?
 //#define MOTOR1_DIR PD?
 //#define MOTOR2_STEP PD?
@@ -33,17 +33,24 @@
 //#define MOTOR4_STEP PD?
 //#define MOTOR4_DIR PD?
 
+// motor buttons
+// TODO: testing, remove
+#define MOTOR0_UP_DD   DDD6
+#define MOTOR0_DOWN_DD DDD7
+#define MOTOR0_PIN     PIND
+#define MOTOR0_UP      PIND6
+#define MOTOR0_DOWN    PIND7
 
 // leds
-// TODO: remove
+// TODO: remove unneeded
 #define LED_0 0
 #define LED_1 1
 #define LEDS_DDR DDRD
-#define LED0_DDR DDD5
-#define LED1_DDR DDD6
+#define LED0_DDR DDD4
+#define LED1_DDR DDD5
 
 #define LEDS_PORT PORTD
-#define LEDBASE   PD5
+#define LEDBASE   PD4
 
 #define leds_init() LEDS_DDR |= _BV(LED0_DDR)|_BV(LED1_DDR)
 #define led_on(led)     LEDS_PORT &= ~(_BV( LEDBASE+led ))
