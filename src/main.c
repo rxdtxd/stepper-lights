@@ -11,10 +11,10 @@
 
 
 // FIXME: move elsewhere
-void fakedelay (unsigned long int times) {
-    uint8_t i;
+void fakedelay (uint32_t times) {
+    uint32_t i;
     for (i = 0; i < times; i++) {
-	_delay_us(0.1); // FIXME: magicnum
+	_delay_us(1); // FIXME: magicnum
     }
     return;
 }
@@ -22,7 +22,7 @@ void fakedelay (unsigned long int times) {
 
 int main (void) {
     uint8_t i;
-    uint8_t motorspeed;
+    uint16_t motorspeed;
     uint8_t buttonsup, buttonsdown;
     
     leds_init();
@@ -40,8 +40,7 @@ int main (void) {
     set_input(MOTORS_DDR, MOTOR0_DOWN_DD);
     
     while (1) {
-	// read speed pot
-	motorspeed = adc_read(0);
+	motorspeed = adc_read(6);
 
 	buttonsup = MOTOR0_PIN & _BV(MOTOR0_UP);
 	buttonsdown = MOTOR0_PIN & _BV(MOTOR0_DOWN);
@@ -58,21 +57,23 @@ int main (void) {
 	    led_off(1);
 	}
 
-	// set dir
+	// FIXME: set dir
 	if ((buttonsup > 0) && (buttonsdown == 0)) {
-	    output_low(MOTORS_PORT, MOTOR0_DIR); // FIXME
+	    output_low(MOTORS_PORT, MOTOR0_DIR);
 	}
 	if ((buttonsup == 0) && (buttonsdown > 0)) {
-	    output_high(MOTORS_PORT, MOTOR0_DIR); // FIXME
+	    output_high(MOTORS_PORT, MOTOR0_DIR);
 	}
 	
 	// roll motor
-	if (buttonsup != buttonsdown) {
+	//motorspeed = 1023; // 1720 us
+
+	if ((buttonsup>0) != (buttonsdown>0)) {
 	    for (i = 0; i < 255; i++) { // 255 = max uint8_t
 		output_high(MOTORS_PORT,MOTOR0_STEP);
-		fakedelay(0);
+		fakedelay(motorspeed/2); // FIXME: magicnum (same in fakedelay())
 		output_low(MOTORS_PORT,MOTOR0_STEP);
-		fakedelay(0);
+		fakedelay(motorspeed/2);
 	    }
 	}
 
@@ -87,7 +88,7 @@ int main (void) {
 	/* buttons_up = spi_transmit(SPI_TRANSMIT_DUMMY); */
 	/* buttons_down = spi_transmit(SPI_TRANSMIT_DUMMY); */
 	
-	_delay_ms(10);
+	//_delay_ms(10);
     }
     
     return 0;
