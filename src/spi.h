@@ -4,10 +4,10 @@
 #ifndef _SPI_H_
 #define _SPI_H_
 
-#include <inttypes.h>
+//#include <inttypes.h>
 
-#include "iocontrol.h"
-#include "main.h"
+#include "pinout.h"
+#include "iocontrol.h" // TODO: using output_high(), don't
 
 // data to transmit if you only really want to read data
 #define SPI_TRANSMIT_DUMMY 0b01010101

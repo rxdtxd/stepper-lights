@@ -1,4 +1,3 @@
-// main.h
 // pin definitions
 
 #ifndef _MAIN_H_

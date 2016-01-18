@@ -1,7 +1,7 @@
 // main.c
 // stepper-lights
 
-#include "main.h"
+#include "pinout.h"
 
 #include <util/delay.h>
 
