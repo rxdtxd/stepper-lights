@@ -1,3 +1,18 @@
-terminal access:
+# terminal access
 
-sudo avrdude -c arduino -b 57600 -p m328p -P /dev/ttyUSB0 -t -vv 
+sudo avrdude -c arduino -b 57600 -p m328p -P /dev/ttyUSB0 -t -vv
+
+
+# ADC
+
+Forgot to slow down ADC (must be below 200 kHz). Enabled prescaler, slowed down to 125 kHz.
+
+
+# Custom symbols/footprints
+
+* DRV8825-breakout.sym
+* 74165-2.sym
+* arduino-nano-1.sym
+
+* arduino_nano_header.fp
+* DIP16_600.fp
