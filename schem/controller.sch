@@ -4,7 +4,7 @@ C 54100 48000 1 0 0 arduino-nano-1.sym
 T 55408 51808 5 10 1 1 0 0 1
 refdes=U1
 T 54108 48008 5 10 0 1 0 0 1
-footprint=DIL 30 600
+footprint=DIL 28 600
 T 54108 48008 5 10 0 1 0 0 1
 device=ARDUINO_NANO
 }
