@@ -4,7 +4,7 @@
 #ifndef _SPI_H_
 #define _SPI_H_
 
-//#include <inttypes.h>
+#include <inttypes.h>
 
 #include "pinout.h"
 #include "iocontrol.h" // TODO: using output_high(), don't

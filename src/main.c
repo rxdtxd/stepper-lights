@@ -11,6 +11,7 @@
 
 
 // FIXME: move elsewhere
+// FIXME: cycle overhead is huge for _delay_us()
 void fakedelay (uint32_t times) {
     uint32_t i;
     for (i = 0; i < times; i++) {
@@ -66,29 +67,24 @@ int main (void) {
 	}
 	
 	// roll motor
-	//motorspeed = 1023; // 1720 us
-
 	if ((buttonsup>0) != (buttonsdown>0)) {
-	    for (i = 0; i < 255; i++) { // 255 = max uint8_t
+	    for (i = 0; i < 255; i++) { // FIXME: 255 = max uint8_t
 		output_high(MOTORS_PORT,MOTOR0_STEP);
-		fakedelay(motorspeed/2); // FIXME: magicnum (same in fakedelay())
+		fakedelay(motorspeed);
 		output_low(MOTORS_PORT,MOTOR0_STEP);
-		fakedelay(motorspeed/2);
+		fakedelay(motorspeed);
 	    }
 	}
-
-	
+        
 	// TODO: func() read into shift registers from buttons
 	shiftreg_mode_load();
-	_delay_us(0.05); // min 15 ns
+	_delay_us(0.05); // 165 datasheet says 15 ns minimum
 	shiftreg_mode_transmit();
 	_delay_us(0.05);
 	
 	/* // read from shift registers into microcontroller */
 	/* buttons_up = spi_transmit(SPI_TRANSMIT_DUMMY); */
 	/* buttons_down = spi_transmit(SPI_TRANSMIT_DUMMY); */
-	
-	//_delay_ms(10);
     }
     
     return 0;

@@ -1,7 +1,7 @@
 // pin definitions
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef _PINOUT_H_
+#define _PINOUT_H_
 
 #include <avr/io.h>
 
@@ -52,32 +52,26 @@
 #define LEDS_PORT PORTD
 #define LEDBASE   PD4
 
+// TODO: move to iocontrol.h?
 #define leds_init() LEDS_DDR |= _BV(LED0_DDR)|_BV(LED1_DDR)
 #define led_on(led)     LEDS_PORT &= ~(_BV( LEDBASE+led ))
 #define led_off(led)    LEDS_PORT |=   _BV( LEDBASE+led )
 #define led_toggle(led) LEDS_PORT ^=   _BV( LEDBASE+led )
 
-
-// shift register to read in buttons - uses SPI
-/* #define SHIFTREG_DDR     DDRB */
-/* #define SHIFTREG_LOAD_DD DDB2 */
-
-/* #define SHIFTREG_PORT PORTB */
-/* #define SHIFTREG_LOAD PB2 // D10 on arduino (aka SPI_SS) */
-
+// using SPI to read in shift registers (165s)
 #define SPI_DDR      DDRB
-#define SPI_SS_DD    DDB2  // ~ slave select
-#define SPI_MOSI_DD  DDB3  // 
-#define SPI_MISO_DD  DDB4  // 
-#define SPI_SCK_DD   DDB5  // clock
+#define SPI_SS_DD    DDB2    // ~ slave select
+#define SPI_MOSI_DD  DDB3    // 
+#define SPI_MISO_DD  DDB4    // 
+#define SPI_SCK_DD   DDB5    // clock
 
 #define SPI_PORT     PORTB
-#define SPI_SS       PORTB2   // D10
-#define SPI_MOSI     PORTB3   // D11
-#define SPI_SCK      PORTB5   // D13
+#define SPI_SS       PORTB2  // D10
+#define SPI_MOSI     PORTB3  // D11
+#define SPI_SCK      PORTB5  // D13
 
 #define SPI_PIN      PINB
 #define SPI_MISO     PINB4   // D12
 
 
-#endif /* _MAIN_H_ */
+#endif /* _PINOUT_H_ */
