@@ -1,0 +1,10 @@
+v 20130925 2
+C 48300 43100 1 0 0 DRV8825-breakout.sym
+{
+T 43300 47740 5 10 0 0 0 0 1
+device=DRV8825-breakout
+T 43300 47540 5 10 0 0 0 0 1
+footprint=DIL 25 600
+T 49800 46000 5 10 1 1 180 6 1
+refdes=U?
+}
