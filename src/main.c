@@ -12,8 +12,8 @@
 
 // FIXME: move elsewhere
 // FIXME: cycle overhead is huge for _delay_us()
-void fakedelay (uint32_t times) {
-    uint32_t i;
+void fakedelay (uint16_t times) {
+    uint16_t i;
     for (i = 0; i < times; i++) {
 	_delay_us(1); // FIXME: magicnum
     }
