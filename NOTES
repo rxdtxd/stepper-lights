@@ -13,6 +13,20 @@ Forgot to slow down ADC (must be below 200 kHz). Enabled prescaler, slowed down 
 * DRV8825-breakout.sym
 * 74165-2.sym
 * arduino-nano-1.sym
+* AM26C31-1.sym
+* SN75176
 
 * arduino_nano_header.fp
 * DIP16_600.fp
+
+
+# Ethernet cable
+
+1. DIR +  | DIR +
+2. DIR -  | DIR -
+3. 24V    | 5V
+4. 24V    | 24V
+5. GND    | GND
+6. GND    | GND
+7. STEP + | STEP +
+8. STEP - | STEP -
