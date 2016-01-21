@@ -46,28 +46,20 @@ int main (void) {
 	buttonsup = MOTOR0_PIN & _BV(MOTOR0_UP);
 	buttonsdown = MOTOR0_PIN & _BV(MOTOR0_DOWN);
 
-	// debug
-	if (buttonsup > 0) {
-	    led_on(0);
-	} else {
-	    led_off(0);
-	}
-	if (buttonsdown > 0) {
-	    led_on(1);
-	} else {
-	    led_off(1);
-	}
-
-	// FIXME: set dir
+	// set dir
+	// FIXME: buttons{up,down} check functions
+	// FIXME set_dir() functions
+	led_off(0);
 	if ((buttonsup > 0) && (buttonsdown == 0)) {
 	    output_low(MOTORS_PORT, MOTOR0_DIR);
-	}
-	if ((buttonsup == 0) && (buttonsdown > 0)) {
+	} else if ((buttonsup == 0) && (buttonsdown > 0)) {
 	    output_high(MOTORS_PORT, MOTOR0_DIR);
+	} else if ((buttonsup > 0) && (buttonsdown > 0)) {
+	    led_on(0);
 	}
 	
 	// roll motor
-	if ((buttonsup>0) != (buttonsdown>0)) {
+	if ((buttonsup > 0) != (buttonsdown > 0)) {
 	    for (i = 0; i < 255; i++) { // FIXME: 255 = max uint8_t
 		output_high(MOTORS_PORT,MOTOR0_STEP);
 		fakedelay(motorspeed);

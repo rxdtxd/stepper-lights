@@ -34,7 +34,7 @@
 //#define MOTOR4_DIR PD?
 
 // motor buttons
-// TODO: testing, remove
+// FIXME: testing, change to proper
 #define MOTOR0_UP_DD   DDD6
 #define MOTOR0_DOWN_DD DDD7
 #define MOTOR0_PIN     PIND
@@ -42,21 +42,18 @@
 #define MOTOR0_DOWN    PIND7
 
 // leds
-// TODO: remove unneeded
-#define LED_0 0
-#define LED_1 1
-#define LEDS_DDR DDRD
-#define LED0_DDR DDD4
-#define LED1_DDR DDD5
+#define LED_DDR DDRC
+#define LED0_DD DDC2
 
-#define LEDS_PORT PORTD
-#define LEDBASE   PD4
+#define LED_PORT PORTC
+#define LEDBASE  PORTC2
 
 // TODO: move to iocontrol.h?
-#define leds_init() LEDS_DDR |= _BV(LED0_DDR)|_BV(LED1_DDR)
-#define led_on(led)     LEDS_PORT &= ~(_BV( LEDBASE+led ))
-#define led_off(led)    LEDS_PORT |=   _BV( LEDBASE+led )
-#define led_toggle(led) LEDS_PORT ^=   _BV( LEDBASE+led )
+// FIXME: too complicated for 1 led
+#define leds_init() LED_DDR |= _BV(LED0_DD)
+#define led_on(led)     LED_PORT &= ~(_BV( LEDBASE+led ))
+#define led_off(led)    LED_PORT |=   _BV( LEDBASE+led )
+#define led_toggle(led) LED_PORT ^=   _BV( LEDBASE+led )
 
 // using SPI to read in shift registers (165s)
 #define SPI_DDR      DDRB
