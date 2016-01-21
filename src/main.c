@@ -8,14 +8,14 @@
 #include "adc.h"
 #include "iocontrol.h"
 #include "spi.h"
+#include "uart.h"
 
 
-// FIXME: move elsewhere
 // FIXME: cycle overhead is huge for _delay_us()
 void fakedelay (uint16_t times) {
     volatile uint16_t i;
     for (i = 0; i < times; i++) {
-	_delay_us(1); // FIXME: magicnum
+	_delay_us(2); // FIXME: magicnum
     }
     return;
 }
@@ -25,7 +25,10 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     uint8_t i;
     uint8_t motorpin;
 
-    // FIXME: due to pinout motorport will have to be set, too
+    // debug
+    printf("speed: %d\n", speed);
+
+    // FIXME: due to pinout motorport will have to be set, too :/
     if (motor > 4) return;
     if (motor == 0) motorpin = MOTOR0_STEP;
     /* if (motor == 1) motorpin = MOTOR1_STEP; */
@@ -33,7 +36,7 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     /* if (motor == 3) motorpin = MOTOR3_STEP; */
     /* if (motor == 4) motorpin = MOTOR4_STEP; */
 	
-    for (i = 0; i < 255; i++) { // FIXME: 255 = maxval uint8_t
+    for (i = 0; i < 42; i++) { // FIXME: magicnum
 	output_high(MOTORS_PORT,motorpin);
 	fakedelay(speed);
 	output_low(MOTORS_PORT,motorpin);
@@ -51,6 +54,10 @@ int main (void) {
     leds_init();
     spi_init();
     adc_init();
+
+    // debug
+    uart_init();
+    stdout = &uart_output;
     
     // TODO: motors_init()
     set_output(MOTORS_DDR, MOTOR0_STEP_DD);
