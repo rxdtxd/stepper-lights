@@ -11,11 +11,12 @@
 #include "uart.h"
 
 
+// FIXME: move to separate file for reuse
 // FIXME: cycle overhead is huge for _delay_us()
 void fakedelay (uint16_t times) {
     volatile uint16_t i;
     for (i = 0; i < times; i++) {
-	_delay_us(2); // FIXME: magicnum
+	_delay_us(1); // FIXME: magicnum
     }
     return;
 }
@@ -26,7 +27,7 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     uint8_t motorpin;
 
     // debug
-    printf("speed: %d\n", speed);
+    //printf("motor %d pulse delay: %d\n", motor, speed);
 
     // FIXME: due to pinout motorport will have to be set, too :/
     if (motor > 4) return;
@@ -35,8 +36,13 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     /* if (motor == 2) motorpin = MOTOR2_STEP; */
     /* if (motor == 3) motorpin = MOTOR3_STEP; */
     /* if (motor == 4) motorpin = MOTOR4_STEP; */
-	
-    for (i = 0; i < 42; i++) { // FIXME: magicnum
+
+    // avoid stepper resonance regions
+    // TODO: delay_adjust() or something
+    if (speed < 135) speed = 135;
+    if (speed > 830) speed = 830;
+    
+    for (i = 0; i < 10; i++) { // FIXME: magicnum
 	output_high(MOTORS_PORT,motorpin);
 	fakedelay(speed);
 	output_low(MOTORS_PORT,motorpin);
