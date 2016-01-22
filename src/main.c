@@ -16,6 +16,8 @@
 void fakedelay (uint16_t times) {
     volatile uint16_t i;
     for (i = 0; i < times; i++) {
+	// NOTE: DRV8825 datasheet specifies 4 us minimum step period,
+	// and 1.9 us minimum for either STEP high or STEP low
 	_delay_us(1); // FIXME: magicnum
     }
     return;
@@ -36,15 +38,15 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     /* if (motor == 4) motorpin = MOTOR4_STEP; */
 
     // avoid stepper resonance regions (determined experimentally)
-#define SPEEDMIN 135
-#define SPEEDMAX 800
+#define SPEEDMIN 20 //135
+#define SPEEDMAX 1023 //800
 #define SPEEDRANGE (SPEEDMAX-SPEEDMIN)
     tmp = (uint32_t)speed * SPEEDRANGE;
     speed = SPEEDMIN + (uint16_t)(tmp / 1023);
-
+    
     // debug
     //printf("motor %u pulse delay: %u\n", motor, speed);
-    
+
     for (i = 0; i < 10; i++) { // FIXME: magicnum
 	output_high(MOTORS_PORT,motorpin);
 	fakedelay(speed);
