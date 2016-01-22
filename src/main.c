@@ -25,11 +25,9 @@ void fakedelay (uint16_t times) {
 inline void motor_step (uint8_t motor, uint16_t speed) {
     uint8_t i;
     uint8_t motorpin;
+    uint32_t tmp;
 
-    // debug
-    //printf("motor %d pulse delay: %d\n", motor, speed);
-
-    // FIXME: due to pinout motorport will have to be set, too :/
+    // TODO: due to pinout motorport will have to be set, too :/
     if (motor > 4) return;
     if (motor == 0) motorpin = MOTOR0_STEP;
     /* if (motor == 1) motorpin = MOTOR1_STEP; */
@@ -37,10 +35,15 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     /* if (motor == 3) motorpin = MOTOR3_STEP; */
     /* if (motor == 4) motorpin = MOTOR4_STEP; */
 
-    // avoid stepper resonance regions
-    // TODO: delay_adjust() or something
-    if (speed < 135) speed = 135;
-    if (speed > 830) speed = 830;
+    // avoid stepper resonance regions (determined experimentally)
+#define SPEEDMIN 135
+#define SPEEDMAX 800
+#define SPEEDRANGE (SPEEDMAX-SPEEDMIN)
+    tmp = (uint32_t)speed * SPEEDRANGE;
+    speed = SPEEDMIN + (uint16_t)(tmp / 1023);
+
+    // debug
+    //printf("motor %u pulse delay: %u\n", motor, speed);
     
     for (i = 0; i < 10; i++) { // FIXME: magicnum
 	output_high(MOTORS_PORT,motorpin);
