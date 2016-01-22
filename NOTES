@@ -22,11 +22,11 @@ Forgot to slow down ADC (must be below 200 kHz). Enabled prescaler, slowed down 
 
 # Ethernet cable
 
-1. DIR +  | DIR +
-2. DIR -  | DIR -
-3. 24V    | 5V
-4. 24V    | 24V
-5. GND    | GND
-6. GND    | GND
-7. STEP + | STEP +
-8. STEP - | STEP -
+1. 24V
+2. 24V
+3. GND
+4. GND
+5. DIR +
+6. DIR -
+7. STEP +
+8. STEP -
