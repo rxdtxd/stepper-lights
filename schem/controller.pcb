@@ -2013,6 +2013,11 @@ Layer(1 "topMIXED")
 	Line[4400.00mil 850.00mil 4400.00mil 650.00mil 25.00mil 60.00mil "clearline"]
 	Line[4400.00mil 650.00mil 4550.00mil 500.00mil 25.00mil 60.00mil "clearline"]
 	Line[4550.00mil 500.00mil 4600.00mil 500.00mil 25.00mil 60.00mil "clearline"]
+	Text[5925.00mil 1825.00mil 0 165 "TxNx" "clearline"]
+	Text[5925.00mil 1950.00mil 0 165 "2016-01-27" "clearline"]
+	Text[5925.00mil 2075.00mil 0 165 "stepper-lights" "clearline"]
+	Text[5925.00mil 2225.00mil 0 165 "controller" "clearline"]
+	Text[5925.00mil 2350.00mil 0 165 "rev 0.1" "clearline"]
 )
 Layer(2 "topGND")
 (
