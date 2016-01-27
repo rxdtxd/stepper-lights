@@ -1,0 +1,255 @@
+# release: pcb 1.99x
+# To read pcb files, the pcb version (or the cvs source date) must be >= the file version
+FileVersion[20070407]
+PCB["" 600000 500000]
+Grid[10000.000000 0 0 0]
+Cursor[0 0 0.000000]
+PolyArea[200000000.000000]
+Thermal[0.500000]
+DRC[1000 1000 1000 1000 1500 1000]
+Flags("nameonpcb,uniquename,clearnew,snappin")
+Groups("1,c:2:3:4:5:6,s:7:8")
+Styles["Signal,1000,3600,2000,1000:Power,2500,6000,3500,1000:Fat,4000,6000,3500,1000:Skinny,600,2402,1181,600"]
+Element(0x00 "SIP4" "CONN_STEPPER" "unknown" 0 0 3 100 0x00)
+(
+	Pin(50 50 60 28 "1" 0x101)
+	Pin(50 150 60 28 "2" 0x01)
+	Pin(50 250 60 28 "3" 0x01)
+	Pin(50 350 60 28 "4" 0x01)
+	ElementLine(  0 50   0 350 20)
+	ElementLine(100 50 100 350 20)
+	ElementLine(  0 100 100 100 10)
+	ElementArc(50  50 50 50 180 180 20)
+	ElementArc(50 350 50 50   0 180 20)
+	Mark(50 50)
+)
+Element(0x00 "RCY200P" "C1" "100u" 0 0 0 100 0x00)
+(
+	Pin(100 200 60 30 "1" 0x101)
+	Pin(300 200 60 30 "2" 0x01)
+	ElementArc(200 200 200 200 0 360 10)
+	ElementLine(-60 200            -20 200 10)
+	ElementLine(-40 180 -40 220 10)
+	ElementLine(420 200 460  200 10)
+	Mark (100 200)
+)
+Element(0x00 "ACY400" "R1" "10k" 0 0 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+	Mark(0 33)
+)
+Element(0x00 "RCY200P" "C3" "100u" 0 0 0 100 0x00)
+(
+	Pin(100 200 60 30 "1" 0x101)
+	Pin(300 200 60 30 "2" 0x01)
+	ElementArc(200 200 200 200 0 360 10)
+	ElementLine(-60 200            -20 200 10)
+	ElementLine(-40 180 -40 220 10)
+	ElementLine(420 200 460  200 10)
+	Mark (100 200)
+)
+Element(0x00 "ACY200" "C4" "100n" 0 0 0 100 0x00)
+(
+	Pin(0 16 55 30 "1" 0x101)
+	Pin(200 16 55 30 "2" 0x01)
+	ElementLine(0 16 50 16 10)
+	ElementLine(150 16 200 16 10)
+	ElementLine(50 0 150 0 10)
+	ElementLine(150 0 150 32 10)
+	ElementLine(150 32 50 32 10)
+	ElementLine(50 32 50 0 10)
+	Mark(0 16)
+)
+Element(0x00 "RCY200P" "C2" "470u" 0 0 0 100 0x00)
+(
+	Pin(100 200 60 30 "1" 0x101)
+	Pin(300 200 60 30 "2" 0x01)
+	ElementArc(200 200 200 200 0 360 10)
+	ElementLine(-60 200            -20 200 10)
+	ElementLine(-40 180 -40 220 10)
+	ElementLine(420 200 460  200 10)
+	Mark (100 200)
+)
+Element(0x00 "ACY400" "R12" "10k" 0 0 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+	Mark(0 33)
+)
+Element(0x00 "ACY200" "C12" "100n" 0 0 0 100 0x00)
+(
+	Pin(0 16 55 30 "1" 0x101)
+	Pin(200 16 55 30 "2" 0x01)
+	ElementLine(0 16 50 16 10)
+	ElementLine(150 16 200 16 10)
+	ElementLine(50 0 150 0 10)
+	ElementLine(150 0 150 32 10)
+	ElementLine(150 32 50 32 10)
+	ElementLine(50 32 50 0 10)
+	Mark(0 16)
+)
+Element(0x00 "DIP8" "U12" "unknown" 0 0 3 100 0x00)
+(
+	Pin(50 50 60 28 "1" 0x101)
+	Pin(50 150 60 28 "2" 0x01)
+	Pin(50 250 60 28 "3" 0x01)
+	Pin(50 350 60 28 "4" 0x01)
+	Pin(350 350 60 28 "5" 0x01)
+	Pin(350 250 60 28 "6" 0x01)
+	Pin(350 150 60 28 "7" 0x01)
+	Pin(350 50 60 28 "8" 0x01)
+	ElementLine(0 0 0 400 10)
+	ElementLine(0 400 400 400 10)
+	ElementLine(400 400 400 0 10)
+	ElementLine(0 0 150 0 10)
+	ElementLine(250 0 400 0 10)
+	ElementArc(200 0 50 50 0 180 10)
+	Mark(50 50)
+)
+Element(0x00 "ACY400" "R11" "10k" 0 0 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+	Mark(0 33)
+)
+Element(0x00 "ACY200" "C11" "100n" 0 0 0 100 0x00)
+(
+	Pin(0 16 55 30 "1" 0x101)
+	Pin(200 16 55 30 "2" 0x01)
+	ElementLine(0 16 50 16 10)
+	ElementLine(150 16 200 16 10)
+	ElementLine(50 0 150 0 10)
+	ElementLine(150 0 150 32 10)
+	ElementLine(150 32 50 32 10)
+	ElementLine(50 32 50 0 10)
+	Mark(0 16)
+)
+Element(0x00 "TO220SW" "U2" "unknown" 0 0 0 100 0x00)
+(
+	Pin(100 200 90 60 "1" 0x101)
+	Pin(200 300 90 60 "2" 0x01)
+	Pin(300 200 90 60 "3" 0x01)
+	ElementLine(  0  80 400  80 20)
+	ElementLine(400  80 400 260 20)
+	ElementLine(400 260   0 260 20) 
+	ElementLine(  0 260   0  80 20) 
+	ElementLine(  0  80 400  80 20)
+	ElementLine(400  80 400 140 20)
+	ElementLine(400 140   0 140 20)
+	ElementLine(  0 140   0  80 20)
+	ElementLine(130 80 130 140 10)
+	ElementLine(270 80 270 140 10)
+	ElementLine(200 300 200 260 30)
+	Mark(100 200)
+)
+Element(0x00 "DIP8" "U11" "unknown" 0 0 3 100 0x00)
+(
+	Pin(50 50 60 28 "1" 0x101)
+	Pin(50 150 60 28 "2" 0x01)
+	Pin(50 250 60 28 "3" 0x01)
+	Pin(50 350 60 28 "4" 0x01)
+	Pin(350 350 60 28 "5" 0x01)
+	Pin(350 250 60 28 "6" 0x01)
+	Pin(350 150 60 28 "7" 0x01)
+	Pin(350 50 60 28 "8" 0x01)
+	ElementLine(0 0 0 400 10)
+	ElementLine(0 400 400 400 10)
+	ElementLine(400 400 400 0 10)
+	ElementLine(0 0 150 0 10)
+	ElementLine(250 0 400 0 10)
+	ElementArc(200 0 50 50 0 180 10)
+	Mark(50 50)
+)
+Element["" "RJ45_NEUTRIK_NE8FBH.fp" "CONN0" "unknown" 0 0 -2500 0 0 100 ""]
+(
+	Pin[0 0 6000 2000 6000 2800 "" "1" "square,edge2"]
+	Pin[10000 5000 6000 2000 6000 2800 "" "2" "edge2"]
+	Pin[0 10000 6000 2000 6000 2800 "" "3" "edge2"]
+	Pin[10000 15000 6000 2000 6000 2800 "" "4" "edge2"]
+	Pin[0 20000 6000 2000 6000 2800 "" "5" "edge2"]
+	Pin[10000 25000 6000 2000 6000 2800 "" "6" "edge2"]
+	Pin[0 30000 6000 2000 6000 2800 "" "7" "edge2"]
+	Pin[10000 35000 6000 2000 6000 2800 "" "8" "edge2"]
+	Pin[-42500 -2500 12800 2000 12800 3050 "" "9" "hole,edge2"]
+	Pin[-7500 37500 12800 2000 12800 3050 "" "9" "hole,edge2"]
+	ElementLine [-47000 -32500 -47000 67500 1000]
+	ElementLine [-56000 67500 15000 67500 1000]
+	ElementLine [15000 67500 15000 -32500 1000]
+	ElementLine [-56000 -32500 15000 -32500 1000]
+	ElementLine [-56000 -32500 -56000 67500 1000]
+)
+
+Element["" "DIP16_600.fp" "U1" "unknown" 0 0 0 0 0 100 ""]
+(
+	Pin[0     0 6000 3000 6600 2800 "" "1" "square"]
+	Pin[0 10000 6000 3000 6600 2800 "" "2" ""]
+	Pin[0 20000 6000 3000 6600 2800 "" "3" ""]
+	Pin[0 30000 6000 3000 6600 2800 "" "4" ""]
+	Pin[0 40000 6000 3000 6600 2800 "" "5" ""]
+	Pin[0 50000 6000 3000 6600 2800 "" "6" ""]
+	Pin[0 60000 6000 3000 6600 2800 "" "7" ""]
+	Pin[0 70000 6000 3000 6600 2800 "" "8" ""]
+	Pin[60000 70000 6000 3000 6600 2800 "" "9" ""]
+	Pin[60000 60000 6000 3000 6600 2800 "" "10" ""]
+	Pin[60000 50000 6000 3000 6600 2800 "" "11" ""]
+	Pin[60000 40000 6000 3000 6600 2800 "" "12" ""]
+	Pin[60000 30000 6000 3000 6600 2800 "" "13" ""]
+	Pin[60000 20000 6000 3000 6600 2800 "" "14" ""]
+	Pin[60000 10000 6000 3000 6600 2800 "" "15" ""]
+	Pin[60000 0     6000 3000 6600 2800 "" "16" ""]
+	ElementLine [-5000 75000 65000 75000 1000]
+	ElementLine [-5000 -5000 25000 -5000 1000]
+	ElementLine [35000 -5000 65000 -5000 1000]
+	ElementLine [-5000 75000 -5000 -5000 1000]
+	ElementLine [65000 -5000 65000 75000 1000]
+	ElementArc [30000 -5000 5000 5000 0 180 1000]
+)
+Layer(1 "top")
+(
+)
+Layer(2 "ground")
+(
+)
+Layer(3 "signal2")
+(
+)
+Layer(4 "signal3")
+(
+)
+Layer(5 "power")
+(
+)
+Layer(6 "bottom")
+(
+)
+Layer(7 "outline")
+(
+)
+Layer(8 "spare")
+(
+)
+Layer(9 "silk")
+(
+)
+Layer(10 "silk")
+(
+)
