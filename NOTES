@@ -18,6 +18,7 @@ Forgot to slow down ADC (must be below 200 kHz). Enabled prescaler, slowed down 
 
 * arduino_nano_header.fp
 * DIP16_600.fp
+* TERMSCREW1_2.fp -- plz remake using newlib's 3terminal_screw_block outline
 
 
 # Ethernet cable
