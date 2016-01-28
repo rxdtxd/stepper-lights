@@ -31,3 +31,10 @@ Forgot to slow down ADC (must be below 200 kHz). Enabled prescaler, slowed down 
 6. DIR -
 7. STEP +
 8. STEP -
+
+
+# 7805 24V->5V
+
+"Defaultish" Arduino Nano clone: 0.025A (0.6W)
+7805 heats up to 50 oC in a minute. 65 oC in 5 minutes.
+
