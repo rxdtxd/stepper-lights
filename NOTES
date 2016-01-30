@@ -1,11 +1,16 @@
-# terminal access
+# terminal access (board testing)
 
 sudo avrdude -c arduino -b 57600 -p m328p -P /dev/ttyUSB0 -t -vv
 
 
 # ADC
 
-Forgot to slow down ADC (must be below 200 kHz). Enabled prescaler, slowed down to 125 kHz.
+Forgot to slow down ADC (must be < 200 kHz). Enabled prescaler, slowed down to 125 kHz.
+
+
+# terminal access (runtime with printf())
+
+uart.{c,h} + routines.
 
 
 # Custom symbols/footprints
@@ -18,7 +23,7 @@ Forgot to slow down ADC (must be below 200 kHz). Enabled prescaler, slowed down 
 
 * arduino_nano_header.fp
 * DIP16_600.fp
-* TERMSCREW1_2.fp -- plz remake using newlib's 3terminal_screw_block outline
+* TERMSCREW1_2.fp -- TODO: use newlib's 3terminal_screw_block outline
 
 
 # Ethernet cable
@@ -32,9 +37,12 @@ Forgot to slow down ADC (must be below 200 kHz). Enabled prescaler, slowed down 
 7. STEP +
 8. STEP -
 
+Should have "swapped" one pair for easier PCB layout (RS422 converters
+have swapped outputs, too).
 
-# 7805 24V->5V
 
-"Defaultish" Arduino Nano clone: 0.025A (0.6W)
+# 7805 24 V -> 5 V
+
+"Defaultish" Arduino Nano clone: 0.025 A (0.6 W) on power supply at 24 V.
 7805 heats up to 50 oC in a minute. 65 oC in 5 minutes.
 
