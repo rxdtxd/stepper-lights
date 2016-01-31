@@ -1,17 +1,17 @@
 .START
 ..device           value    footprint               quantity  refdes
-74165              unknown  DIP16                   2         U21         U22
+74165              unknown  DIP16                   2         U21 U22
 7805               unknown  TO220SW                 1         U2
-AM26C31            unknown  DIP16                   3         U11         U12    U13
+AM26C31            unknown  DIP16                   3         U11 U12 U13
 ARDUINO_NANO       unknown  arduino_nano_header.fp  1         U1
-CAPACITOR          100n     ACY200                  12        C1          C11    C12    C13    C21    C22  C4   C5   C6   C7   C8  C9
+CAPACITOR          100n     ACY200                  12        C1 C11 C12 C13 C21 C22 C4 C5 C6 C7 C8 C9
 CAPACITOR          100u     RCY200P                 1         C3
 CAPACITOR          470u     RCY200P                 1         C2
 CONNECTOR_2        unknown  TERMSCREW1_2.fp         1         CONN_POWER
-LED                red      DIODE_LAY               300       1           D1
+LED                red      DIODE_LAY 300           1         D1
 RESISTOR           1k       ACY400                  1         R1
-RESISTORPACK_10    1k       SIP10                   2         R21         R22
-RJ45               unknown  RJ45_NEUTRIK_NE8FBH.fp  5         CONN0       CONN1  CONN2  CONN3  CONN4
-SPST               unknown  SIP2                    10        S10         S11    S12    S13    S14    S20  S21  S22  S23  S24
-VARIABLE_RESISTOR  10k      POT.fp                  5         R5          R6     R7     R8     R9
+RESISTORPACK_10    1k       SIP10                   2         R21 R22
+RJ45               unknown  RJ45_NEUTRIK_NE8FBH.fp  5         CONN0 CONN1 CONN2 CONN3 CONN4
+SPST               unknown  SIP2                    10        S10 S11 S12 S13 S14 S20 S21 S22 S23 S24
+VARIABLE_RESISTOR  10k      POT.fp                  5         R5 R6 R7 R8 R9
 .END
