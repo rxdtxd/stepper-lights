@@ -5,7 +5,16 @@ sudo avrdude -c arduino -b 57600 -p m328p -P /dev/ttyUSB0 -t -vv
 
 # ADC
 
-Forgot to slow down ADC (must be < 200 kHz). Enabled prescaler, slowed down to 125 kHz.
+Forgot to slow down ADC (must be < 200 kHz). Enabled prescaler, slowed
+down to 125 kHz.
+
+
+# 74165
+
+Seem not to read in values correctly if pull-down resistors are 10k. 1k
+works fine.
+
+74166 worked OK with 10k in dmx-dimmer.
 
 
 # terminal access (runtime with printf())
