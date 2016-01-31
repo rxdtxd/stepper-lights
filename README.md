@@ -3,6 +3,12 @@
 ## BOM
 
 See [controller.bom](schem/controller.bom) and
-[driver.bom](schem/driver.bom) for most up-to-date versions.
+[driver.bom](schem/driver.bom).
 
-If a different version is used, navigate manually.
+Some mechanical components are not listed:
+
+* push-buttons (OFF-(ON))
+* power supply (24 V, 2+ A)
+* power switch (OFF-ON)
+* cooling fan
+* UTP cables
