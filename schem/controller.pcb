@@ -5,7 +5,7 @@ FileVersion[20091103]
 
 PCB["controller" 6700.00mil 3100.00mil]
 
-Grid[2500.000000 0.0000 0.0000 1]
+Grid[2500.000000 0.0000 0.0000 0]
 PolyArea[200000000.000000]
 Thermal[0.500000]
 DRC[15.00mil 10.00mil 15.00mil 10.00mil 15.00mil 10.00mil]
@@ -1119,22 +1119,6 @@ Element["" "RCY200P" "C2" "470u" 900.00mil 2300.00mil -100.00mil -200.00mil 0 10
 
 	)
 
-Element["" "RCY200P" "C3" "100u" 900.00mil 1800.00mil -100.00mil -200.00mil 0 100 ""]
-(
-	Attribute("device" "CAPACITOR")
-	Attribute("manufacturer" "unknown")
-	Attribute("manufacturer_part_number" "unknown")
-	Attribute("vendor" "unknown")
-	Attribute("vendor_part_number" "unknown")
-	Pin[0.0000 0.0000 75.00mil 60.00mil 81.00mil 0.8000mm "+" "1" "square,edge2"]
-	Pin[200.00mil 0.0000 75.00mil 60.00mil 81.00mil 0.8000mm "-" "2" "edge2,thermal(1X,2X,4X)"]
-	ElementLine [-160.00mil 0.0000 -120.00mil 0.0000 10.00mil]
-	ElementLine [-140.00mil -20.00mil -140.00mil 20.00mil 10.00mil]
-	ElementLine [320.00mil 0.0000 360.00mil 0.0000 10.00mil]
-	ElementArc [100.00mil 0.0000 200.00mil 200.00mil 0 360 10.00mil]
-
-	)
-
 Element["" "ACY200" "C12" "100n" 4300.00mil 1400.00mil -60.00mil 86.00mil 2 100 ""]
 (
 	Attribute("device" "CAPACITOR")
@@ -1286,24 +1270,6 @@ Element["" "ACY200" "C11" "100n" 1000.00mil 1400.00mil -60.00mil 86.00mil 2 100 
 	ElementLine [-150.00mil -16.00mil -150.00mil 16.00mil 10.00mil]
 	ElementLine [-150.00mil -16.00mil -50.00mil -16.00mil 10.00mil]
 	ElementLine [-50.00mil -16.00mil -50.00mil 16.00mil 10.00mil]
-
-	)
-
-Element["" "DIODE_LAY 300" "D1" "red" 4900.00mil 2500.00mil 0.0000 50.00mil 0 100 ""]
-(
-	Attribute("device" "LED")
-	Attribute("manufacturer" "unknown")
-	Attribute("manufacturer_part_number" "unknown")
-	Attribute("vendor" "unknown")
-	Attribute("vendor_part_number" "unknown")
-	Pin[0.0000 0.0000 75.00mil 60.00mil 81.00mil 0.8000mm "1" "1" "square,edge2"]
-	Pin[300.00mil 0.0000 75.00mil 60.00mil 81.00mil 0.8000mm "2" "2" "edge2"]
-	ElementLine [0.0000 0.0000 100.00mil 0.0000 10.00mil]
-	ElementLine [200.00mil 0.0000 300.00mil 0.0000 10.00mil]
-	ElementLine [100.00mil 0.0000 200.00mil -50.00mil 10.00mil]
-	ElementLine [200.00mil -50.00mil 200.00mil 50.00mil 10.00mil]
-	ElementLine [200.00mil 50.00mil 100.00mil 0.0000 10.00mil]
-	ElementLine [100.00mil -50.00mil 100.00mil 50.00mil 10.00mil]
 
 	)
 
@@ -1810,6 +1776,30 @@ Element["" "RJ45_NEUTRIK_NE8FBH.fp" "CONN0" "unknown" 700.00mil 500.00mil 320.00
 	ElementLine [-675.00mil -560.00mil 325.00mil -560.00mil 10.00mil]
 
 	)
+
+Element["" "RCY100P" "C3" "100u" 1000.00mil 1800.00mil -50.00mil -100.00mil 0 100 ""]
+(
+	Pin[0.0000 0.0000 2.0000mm 60.00mil 2.1524mm 0.8000mm "1" "1" "square,edge2"]
+	Pin[100.00mil 0.0000 2.0000mm 60.00mil 2.1524mm 30.00mil "2" "2" "edge2,thermal(1X,4X)"]
+	ElementLine [-110.00mil 0.0000 -70.00mil 0.0000 10.00mil]
+	ElementLine [-90.00mil -20.00mil -90.00mil 20.00mil 10.00mil]
+	ElementLine [170.00mil 0.0000 210.00mil 0.0000 10.00mil]
+	ElementArc [50.00mil 0.0000 100.00mil 100.00mil 0 360 10.00mil]
+
+	)
+
+Element["" "DIODE_LAY-300" "D1" "red" 4900.00mil 2500.00mil 0.0000 -150.00mil 0 100 ""]
+(
+	Pin[0.0000 0.0000 2.0000mm 60.00mil 2.1524mm 0.8000mm "1" "1" "square,edge2"]
+	Pin[300.00mil 0.0000 2.0000mm 60.00mil 2.1524mm 0.8000mm "2" "2" "edge2"]
+	ElementLine [0.0000 0.0000 100.00mil 0.0000 10.00mil]
+	ElementLine [200.00mil 0.0000 300.00mil 0.0000 10.00mil]
+	ElementLine [100.00mil 0.0000 200.00mil -50.00mil 10.00mil]
+	ElementLine [200.00mil -50.00mil 200.00mil 50.00mil 10.00mil]
+	ElementLine [200.00mil 50.00mil 100.00mil 0.0000 10.00mil]
+	ElementLine [100.00mil -50.00mil 100.00mil 50.00mil 10.00mil]
+
+	)
 Layer(1 "topMIXED")
 (
 	Line[2800.00mil 2150.00mil 2450.00mil 2150.00mil 25.00mil 60.00mil "clearline"]
@@ -2014,10 +2004,10 @@ Layer(1 "topMIXED")
 	Line[4400.00mil 650.00mil 4550.00mil 500.00mil 25.00mil 60.00mil "clearline"]
 	Line[4550.00mil 500.00mil 4600.00mil 500.00mil 25.00mil 60.00mil "clearline"]
 	Text[5925.00mil 1825.00mil 0 165 "TxNx" "clearline"]
-	Text[5925.00mil 1950.00mil 0 165 "2016-01-27" "clearline"]
+	Text[5925.00mil 1950.00mil 0 165 "2016-XX-XX" "clearline"]
 	Text[5925.00mil 2075.00mil 0 165 "stepper-lights" "clearline"]
 	Text[5925.00mil 2225.00mil 0 165 "controller" "clearline"]
-	Text[5925.00mil 2350.00mil 0 165 "rev 0.1" "clearline"]
+	Text[5925.00mil 2350.00mil 0 165 "rev0.2" "clearline"]
 )
 Layer(2 "topGND")
 (
@@ -2105,7 +2095,6 @@ Layer(3 "bottomVCC")
 	Line[5100.00mil 1050.00mil 5150.00mil 1100.00mil 40.00mil 60.00mil "clearline"]
 	Line[5100.00mil 1000.00mil 5100.00mil 1050.00mil 40.00mil 60.00mil "clearline"]
 	Line[700.00mil 1050.00mil 700.00mil 1000.00mil 40.00mil 60.00mil "clearline"]
-	Line[900.00mil 1800.00mil 1000.00mil 1700.00mil 40.00mil 60.00mil "clearline"]
 	Line[2900.00mil 900.00mil 2900.00mil 1000.00mil 40.00mil 60.00mil "clearline"]
 	Line[700.00mil 1900.00mil 400.00mil 2200.00mil 40.00mil 60.00mil "clearline"]
 	Line[400.00mil 2200.00mil 100.00mil 2200.00mil 40.00mil 60.00mil "clearline"]
@@ -2122,6 +2111,8 @@ Layer(3 "bottomVCC")
 	Line[1900.00mil 1800.00mil 2350.00mil 1800.00mil 40.00mil 60.00mil "clearline"]
 	Line[3475.00mil 1800.00mil 2850.00mil 1800.00mil 40.00mil 60.00mil "clearline"]
 	Line[2850.00mil 1800.00mil 2600.00mil 1550.00mil 40.00mil 60.00mil "clearline"]
+	Line[900.00mil 1800.00mil 1000.00mil 1800.00mil 40.00mil 60.00mil "clearline"]
+	Line[1000.00mil 1800.00mil 1000.00mil 1700.00mil 40.00mil 60.00mil "clearline"]
 )
 Layer(4 "bottom24V")
 (
