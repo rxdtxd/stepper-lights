@@ -11,3 +11,8 @@ bom:
 
 clean:
 	$(REMOVE) *.bak *.bak0 *.bak1 *.pcb\- *.sch\~
+
+gerber:
+	pcb -x gerber controller.pcb
+	pcb -x gerber driver.pcb
+	mv *.gbr *.cnc fab/
