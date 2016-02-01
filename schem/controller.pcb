@@ -2116,17 +2116,36 @@ Layer(3 "bottomVCC")
 )
 Layer(4 "bottom24V")
 (
-	Line[600.00mil 2500.00mil 500.00mil 2400.00mil 40.00mil 60.00mil "clearline"]
-	Line[800.00mil 2500.00mil 600.00mil 2500.00mil 40.00mil 60.00mil "clearline"]
-	Line[900.00mil 2400.00mil 800.00mil 2500.00mil 40.00mil 60.00mil "clearline"]
 	Line[900.00mil 2300.00mil 900.00mil 2400.00mil 40.00mil 60.00mil "clearline"]
 	Line[900.00mil 2900.00mil 900.00mil 2300.00mil 40.00mil 60.00mil "clearline"]
 	Line[500.00mil 2400.00mil 100.00mil 2400.00mil 40.00mil 60.00mil "clearline"]
+	Line[650.00mil 600.00mil 700.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[700.00mil 550.00mil 700.00mil 500.00mil 40.00mil 60.00mil "clearline"]
+	Line[2050.00mil 600.00mil 2100.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[2100.00mil 550.00mil 2100.00mil 500.00mil 40.00mil 60.00mil "clearline"]
+	Line[3450.00mil 600.00mil 3500.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[3500.00mil 550.00mil 3500.00mil 500.00mil 40.00mil 60.00mil "clearline"]
+	Line[4850.00mil 600.00mil 4900.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[4900.00mil 550.00mil 4900.00mil 500.00mil 40.00mil 60.00mil "clearline"]
+	Line[6250.00mil 600.00mil 6300.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[6300.00mil 550.00mil 6300.00mil 500.00mil 40.00mil 60.00mil "clearline"]
+	Line[500.00mil 2400.00mil 800.00mil 2400.00mil 40.00mil 60.00mil "clearline"]
+	Line[800.00mil 2400.00mil 900.00mil 2300.00mil 40.00mil 60.00mil "clearline"]
 )
 Layer(5 "bottomGND")
 (
 	Line[2500.00mil 1500.00mil 2500.00mil 1300.00mil 40.00mil 60.00mil "clearline"]
 	Line[3400.00mil 2700.00mil 3400.00mil 2900.00mil 25.00mil 60.00mil "clearline"]
+	Line[550.00mil 600.00mil 600.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[600.00mil 550.00mil 600.00mil 500.00mil 40.00mil 60.00mil "clearline"]
+	Line[6150.00mil 600.00mil 6200.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[6200.00mil 550.00mil 6200.00mil 500.00mil 40.00mil 60.00mil "clearline"]
+	Line[4750.00mil 600.00mil 4800.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[4800.00mil 550.00mil 4800.00mil 500.00mil 40.00mil 60.00mil "clearline"]
+	Line[3350.00mil 600.00mil 3400.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[3400.00mil 550.00mil 3400.00mil 500.00mil 40.00mil 60.00mil "clearline"]
+	Line[1950.00mil 600.00mil 2000.00mil 550.00mil 40.00mil 60.00mil "clearline"]
+	Line[2000.00mil 550.00mil 2000.00mil 500.00mil 40.00mil 60.00mil "clearline"]
 	Polygon("clearpoly")
 	(
 		[0.0000 0.0000] [6700.00mil 0.0000] [6700.00mil 3100.00mil] [0.0000 3100.00mil] 
