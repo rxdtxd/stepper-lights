@@ -3,9 +3,9 @@
 7805                 unknown  TO220SW                 1         U2
 CAPACITOR            100n     ACY200                  3         C11 C12 C4
 CONNECTOR_4          unknown  SIP4                    1         CONN_STEPPER
-DRV8825_BREAKOUT     unknown  DIP16_600.fp            1         U1
+DRV8825_BREAKOUT     unknown  DIP16_500.fp            1         U1
 DS75176              unknown  DIP8                    2         U11 U12
-POLARIZED_CAPACITOR  100u     RCY200P                 2         C1 C3
+POLARIZED_CAPACITOR  100u     RCY100P                 2         C1 C3
 POLARIZED_CAPACITOR  470u     RCY200P                 1         C2
 RESISTOR             10k      ACY400                  3         R1 R11 R12
 RJ45                 unknown  RJ45_NEUTRIK_NE8FBH.fp  1         CONN0
