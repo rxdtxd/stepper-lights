@@ -53,6 +53,24 @@ inline void motors_init (void) {
     return;
 }
 
+inline void motor_set_dir (uint8_t motor, uint8_t dir) {
+    if (dir == 0) {
+	if (motor == 0) { output_low(MOTOR0_PORT, MOTOR0_DIR); }
+	if (motor == 1) { output_low(MOTOR1_PORT, MOTOR1_DIR); }
+	if (motor == 2) { output_low(MOTOR2_PORT, MOTOR2_DIR); }
+	if (motor == 3) { output_low(MOTOR3_PORT, MOTOR3_DIR); }
+	if (motor == 4) { output_low(MOTOR4_PORT, MOTOR4_DIR); }
+    } else {
+	if (motor == 0) { output_high(MOTOR0_PORT, MOTOR0_DIR); }
+	if (motor == 1) { output_high(MOTOR1_PORT, MOTOR1_DIR); }
+	if (motor == 2) { output_high(MOTOR2_PORT, MOTOR2_DIR); }
+	if (motor == 3) { output_high(MOTOR3_PORT, MOTOR3_DIR); }
+	if (motor == 4) { output_high(MOTOR4_PORT, MOTOR4_DIR); }
+    }
+    
+    return;
+}
+
 inline void motor_step (uint8_t motor, uint16_t speed) {
     uint8_t i;
     uint8_t port, pin;
@@ -102,7 +120,6 @@ inline bool pressed (uint8_t buttons, uint8_t motor) {
 
 int main (void) {
     uint8_t motor;
-    uint8_t port, pin;
     uint16_t speed[5];
     uint8_t bu, bd;  // buttons up, buttons down
     
@@ -139,23 +156,15 @@ int main (void) {
 	    if (motor == 2) speed[motor] = adc_read(2);
 	    if (motor == 3) speed[motor] = adc_read(3);
 	    if (motor == 4) speed[motor] = adc_read(7);
-
-	    // TODO: similar in motor_step(), so refactor
-	    if (motor == 0) { port = MOTOR0_PORT; pin = MOTOR0_DIR; }
-	    if (motor == 1) { port = MOTOR1_PORT; pin = MOTOR1_DIR; }
-	    if (motor == 2) { port = MOTOR2_PORT; pin = MOTOR2_DIR; }
-	    if (motor == 3) { port = MOTOR3_PORT; pin = MOTOR3_DIR; }
-	    if (motor == 4) { port = MOTOR4_PORT; pin = MOTOR4_DIR; }
 	    
 	    // set dir
-	    // TODO: func()
 	    if (pressed(bu, motor) && !pressed(bd, motor)) {
-		output_low(port, pin);
+		motor_set_dir(motor, 0); // FIXME: magicnum
 	    } else if (!pressed(bu, motor) && pressed(bd, motor)) {
-		output_high(port, pin);
+		motor_set_dir(motor, 1); // FIXME: magicnum
 	    }
 	    
-	    // roll motor
+	    // roll
 	    if (pressed(bu, motor) != pressed(bd, motor)) {
 		motor_step(motor, speed[motor]);
 	    }
