@@ -59,7 +59,7 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
 
 int main (void) {
     uint8_t i;
-    uint16_t speed;
+    uint16_t speed[5];
     uint8_t buttonsup, buttonsdown;
     
     led_init();
@@ -76,33 +76,28 @@ int main (void) {
     output_low(MOTORS_PORT, MOTOR0_STEP);
     output_low(MOTORS_PORT, MOTOR0_DIR);
 
-    // TODO: testing, remove
-    /* set_input(MOTORS_DDR, MOTOR0_UP_DD); */
-    /* set_input(MOTORS_DDR, MOTOR0_DOWN_DD); */
-
     while (1) {
-	speed = adc_read(6);  // FIXME: iterate through 5 ADC pins
+	for (i = 0; i < 5; i++) {
+	    speed[i] = adc_read(i);
+	}
 
-	// debug (1 chan)
-	/* buttonsup = MOTOR0_PIN & _BV(MOTOR0_UP); */
-	/* buttonsdown = MOTOR0_PIN & _BV(MOTOR0_DOWN); */
-
-	/* // TODO: func() read into shift registers from buttons */
+	// TODO: func()
+	// read from buttons into shift registers
 	shiftreg_mode_load();
 	_delay_us(0.05); // 165 datasheet says 15 ns minimum
 	shiftreg_mode_transmit();
 	_delay_us(0.05);
 	
-	/* // read from shift registers into microcontroller */
+	// read from shift registers into microcontroller
 	buttonsup = spi_transmit(SPI_TRANSMIT_DUMMY);
 	buttonsdown = spi_transmit(SPI_TRANSMIT_DUMMY);
 
 	// debug
-	//printf("up %u down %u\n", buttonsup, buttonsdown);
+	printf("up %u down %u\n", buttonsup, buttonsdown);
 	
 	// set dir
-	// FIXME: buttons{up,down} check functions
-	// FIXME set_dir() functions
+	// TODO: buttons{up,down} check functions
+	// TODO: set_dir() functions
 	led_off();
 	if ((buttonsup > 0) && (buttonsdown == 0)) {
 	    output_low(MOTORS_PORT, MOTOR0_DIR);
