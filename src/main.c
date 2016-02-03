@@ -9,7 +9,7 @@
 #include "adc.h"
 #include "iocontrol.h"
 #include "spi.h"
-#include "uart.h"
+/* #include "uart.h" */
 
 
 // FIXME: move to separate file for reuse
@@ -71,9 +71,6 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     tmp = (uint32_t)speed * SPEEDRANGE;
     speed = SPEEDMIN + (uint16_t)(tmp / 1023);
     
-    // debug
-    //printf("motor %u pulse delay: %u\n", motor, speed);
-
     for (i = 0; i < 10; i++) { // FIXME: magicnum
 	output_high(port, pin);
 	fakedelay(speed);
@@ -93,11 +90,11 @@ inline bool pressed (uint8_t buttons, uint8_t motor) {
 }
 
 
-uint8_t main (void) {
+int main (void) {
     uint8_t motor;
     uint8_t port, pin;
     uint16_t speed[5];
-    uint8_t buttonsup, buttonsdown;
+    uint8_t bu, bd;  // buttons up, buttons down
     
     led_init();
     spi_init();
@@ -106,9 +103,9 @@ uint8_t main (void) {
 
     led_off();
     
-    // debug
-    uart_init();
-    stdout = &uart_output;
+    /* // debug */
+    /* uart_init(); */
+    /* stdout = &uart_output; */
     
     while (1) {
 	//led_off();
@@ -120,22 +117,17 @@ uint8_t main (void) {
 	_delay_us(0.05);
 	
 	// read from shift registers into microcontroller
-	buttonsup = spi_transmit(SPI_TRANSMIT_DUMMY);
-	buttonsdown = spi_transmit(SPI_TRANSMIT_DUMMY);
-
-	// debug
-	//printf("up %u down %u\n", buttonsup, buttonsdown);
+	bu = spi_transmit(SPI_TRANSMIT_DUMMY);
+	bd = spi_transmit(SPI_TRANSMIT_DUMMY);
 
 	led_off();
 	for (motor = 0; motor < 5; motor++) {
-	    // debug
-	    //printf("%u\n", pressed(buttonsup, motor) ? 1 : 0);
-	    //printf("%u\n", pressed(buttonsdown,motor) ? 1 : 0);
-
+	    if (pressed(bu, motor) && pressed(bd, motor)) {
+		led_on();
+		continue;
+	    }
+	    
 	    speed[motor] = adc_read(motor);
-
-	    // debug
-	    printf("MOTOR%u speed: %u\n", motor, speed[motor]);
 
 	    // TODO: similar in motor_step(), so refactor
 	    if (motor == 0) { port = MOTOR0_PORT; pin = MOTOR0_DIR; }
@@ -145,22 +137,15 @@ uint8_t main (void) {
 	    if (motor == 4) { port = MOTOR4_PORT; pin = MOTOR4_DIR; }
 	    
 	    // set dir
-	    // TODO: buttons{up,down} check functions
 	    // TODO: set_dir() functions
-	    if (pressed(buttonsup, motor) &&
-		pressed(buttonsdown, motor)) {
-		led_on();
-	    } else if (pressed(buttonsup, motor) &&
-		       !(pressed(buttonsdown, motor))) {
+	    if (pressed(bu, motor) && !pressed(bd, motor)) {
 		output_low(port, pin);
-	    } else if (!(pressed(buttonsup, motor)) &&
-		       pressed(buttonsdown, motor)) {
+	    } else if (!pressed(bu, motor) && pressed(bd, motor)) {
 		output_high(port, pin);
 	    }
 	    
 	    // roll motor
-	    if (pressed(buttonsup, motor) !=
-		pressed(buttonsdown, motor)) {
+	    if (pressed(bu, motor) != pressed(bd, motor)) {
 		motor_step(motor, speed[motor]);
 	    }
 	}
