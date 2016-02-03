@@ -62,7 +62,7 @@ int main (void) {
     uint16_t speed;
     uint8_t buttonsup, buttonsdown;
     
-    leds_init();
+    led_init();
     spi_init();
     adc_init();
     
@@ -103,13 +103,13 @@ int main (void) {
 	// set dir
 	// FIXME: buttons{up,down} check functions
 	// FIXME set_dir() functions
-	led_off(0);
+	led_off();
 	if ((buttonsup > 0) && (buttonsdown == 0)) {
 	    output_low(MOTORS_PORT, MOTOR0_DIR);
 	} else if ((buttonsup == 0) && (buttonsdown > 0)) {
 	    output_high(MOTORS_PORT, MOTOR0_DIR);
 	} else if ((buttonsup > 0) && (buttonsdown > 0)) {
-	    led_on(0);
+	    led_on();
 	}
 	
 	// roll motor

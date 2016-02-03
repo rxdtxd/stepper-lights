@@ -43,17 +43,16 @@
 
 // leds
 #define LED_DDR DDRC
-#define LED0_DD DDC5
+#define LED_DD DDC5
 
 #define LED_PORT PORTC
-#define LEDBASE  PORTC5  // A5?
+#define LEDBASE  PORTC5  // A5
 
 // TODO: move to iocontrol.h?
-// FIXME: too complicated for 1 led
-#define leds_init() LED_DDR |= _BV(LED0_DD)
-#define led_on(led)     LED_PORT &= ~(_BV( LEDBASE+led ))
-#define led_off(led)    LED_PORT |=   _BV( LEDBASE+led )
-#define led_toggle(led) LED_PORT ^=   _BV( LEDBASE+led )
+#define led_init()   LED_DDR |= _BV(LED_DD)
+#define led_on()     LED_PORT &= ~(_BV( LEDBASE ))
+#define led_off()    LED_PORT |=   _BV( LEDBASE )
+#define led_toggle() LED_PORT ^=   _BV( LEDBASE )
 
 // using SPI to read in shift registers (165s)
 #define SPI_DDR      DDRB
