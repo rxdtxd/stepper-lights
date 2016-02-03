@@ -7,39 +7,49 @@
 
 #define F_CPU 16000000UL
 
+// avr gcc fixup - for some reason, pin 7 of port C is not defined
+#ifndef DDC7
+#define DDC7 7
+#endif
+#ifndef PORTC7
+#define PORTC7 7
+#endif
+
 // motor control - data direction
-#define MOTORS_DDR DDRD
+#define MOTOR0_DDR     DDRD
+#define MOTOR1_DDR     DDRD
+#define MOTOR2_DDR     DDRD
+#define MOTOR3_DDR     DDRB
+#define MOTOR4_DDR     DDRC
+
 #define MOTOR0_STEP_DD DDD2
-#define MOTOR0_DIR_DD DDD3
-//#define MOTOR1_STEP_DD DDD?
-//#define MOTOR1_DIR_DD DDD?
-//#define MOTOR2_STEP_DD DDD?
-//#define MOTOR2_DIR_DD DDD?
-//#define MOTOR3_STEP_DD DDD?
-//#define MOTOR3_DIR_DD DDD?
-//#define MOTOR4_STEP_DD DDD?
-//#define MOTOR4_DIR_DD DDD?
+#define MOTOR0_DIR_DD  DDD3
+#define MOTOR1_STEP_DD DDD4
+#define MOTOR1_DIR_DD  DDD5
+#define MOTOR2_STEP_DD DDD6
+#define MOTOR2_DIR_DD  DDD7
+#define MOTOR3_STEP_DD DDB0
+#define MOTOR3_DIR_DD  DDB1
+#define MOTOR4_STEP_DD DDC6
+#define MOTOR4_DIR_DD  DDC7
 
 // motor control - output ports
-#define MOTORS_PORT PORTD
-#define MOTOR0_STEP PORTD2 // D3 on arduino
-#define MOTOR0_DIR  PORTD3 // D4 on arduino
-//#define MOTOR1_STEP PD?
-//#define MOTOR1_DIR PD?
-//#define MOTOR2_STEP PD?
-//#define MOTOR2_DIR PD?
-//#define MOTOR3_STEP PD?
-//#define MOTOR3_DIR PD?
-//#define MOTOR4_STEP PD?
-//#define MOTOR4_DIR PD?
+#define MOTOR0_PORT    PORTD
+#define MOTOR1_PORT    PORTD
+#define MOTOR2_PORT    PORTD
+#define MOTOR3_PORT    PORTB
+#define MOTOR4_PORT    PORTC
 
-// motor buttons
-// FIXME: testing, change to proper
-/* #define MOTOR0_UP_DD   DDD6 */
-/* #define MOTOR0_DOWN_DD DDD7 */
-/* #define MOTOR0_PIN     PIND */
-/* #define MOTOR0_UP      PIND6 */
-/* #define MOTOR0_DOWN    PIND7 */
+#define MOTOR0_STEP    PORTD2  // D2
+#define MOTOR0_DIR     PORTD3  // D3
+#define MOTOR1_STEP    PORTD4  // D4
+#define MOTOR1_DIR     PORTD5  // D5
+#define MOTOR2_STEP    PORTD6  // D6
+#define MOTOR2_DIR     PORTD7  // D7
+#define MOTOR3_STEP    PORTB0  // D8
+#define MOTOR3_DIR     PORTB1  // D9
+#define MOTOR4_STEP    PORTC6  // A6
+#define MOTOR4_DIR     PORTC7  // A7
 
 // leds
 #define LED_DDR DDRC

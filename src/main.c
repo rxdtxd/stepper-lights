@@ -3,6 +3,7 @@
 
 #include "pinout.h"
 
+#include <stdbool.h>
 #include <util/delay.h>
 
 #include "adc.h"
@@ -23,19 +24,45 @@ void fakedelay (uint16_t times) {
     return;
 }
 
+inline void motors_init (void) {
+    set_output(MOTOR0_DDR, MOTOR0_STEP_DD);
+    set_output(MOTOR0_DDR, MOTOR0_DIR_DD);
+    output_low(MOTOR0_PORT, MOTOR0_STEP);
+    output_low(MOTOR0_PORT, MOTOR0_DIR);
+
+    set_output(MOTOR1_DDR, MOTOR1_STEP_DD);
+    set_output(MOTOR1_DDR, MOTOR1_DIR_DD);
+    output_low(MOTOR1_PORT, MOTOR1_STEP);
+    output_low(MOTOR1_PORT, MOTOR1_DIR);
+
+    set_output(MOTOR2_DDR, MOTOR2_STEP_DD);
+    set_output(MOTOR2_DDR, MOTOR2_DIR_DD);
+    output_low(MOTOR2_PORT, MOTOR2_STEP);
+    output_low(MOTOR2_PORT, MOTOR2_DIR);
+
+    set_output(MOTOR3_DDR, MOTOR3_STEP_DD);
+    set_output(MOTOR3_DDR, MOTOR3_DIR_DD);
+    output_low(MOTOR3_PORT, MOTOR3_STEP);
+    output_low(MOTOR3_PORT, MOTOR3_DIR);
+
+    set_output(MOTOR4_DDR, MOTOR4_STEP_DD);
+    set_output(MOTOR4_DDR, MOTOR4_DIR_DD);
+    output_low(MOTOR4_PORT, MOTOR4_STEP);
+    output_low(MOTOR4_PORT, MOTOR4_DIR);
+}
 
 inline void motor_step (uint8_t motor, uint16_t speed) {
     uint8_t i;
-    uint8_t motorpin;
+    uint8_t port, pin;
     uint32_t tmp;
 
-    // TODO: due to pinout motorport will have to be set, too :/
+    // FIXME: unneeded indirection, factor into macro?..
     if (motor > 4) return;
-    if (motor == 0) motorpin = MOTOR0_STEP;
-    /* if (motor == 1) motorpin = MOTOR1_STEP; */
-    /* if (motor == 2) motorpin = MOTOR2_STEP; */
-    /* if (motor == 3) motorpin = MOTOR3_STEP; */
-    /* if (motor == 4) motorpin = MOTOR4_STEP; */
+    if (motor == 0) { port = MOTOR0_PORT; pin = MOTOR0_STEP; }
+    if (motor == 1) { port = MOTOR1_PORT; pin = MOTOR1_STEP; }
+    if (motor == 2) { port = MOTOR2_PORT; pin = MOTOR2_STEP; }
+    if (motor == 3) { port = MOTOR3_PORT; pin = MOTOR3_STEP; }
+    if (motor == 4) { port = MOTOR4_PORT; pin = MOTOR4_STEP; }
 
     // avoid stepper resonance regions (determined experimentally)
 #define SPEEDMIN 20 //135
@@ -48,39 +75,43 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     //printf("motor %u pulse delay: %u\n", motor, speed);
 
     for (i = 0; i < 10; i++) { // FIXME: magicnum
-	output_high(MOTORS_PORT,motorpin);
+	output_high(port, pin);
 	fakedelay(speed);
-	output_low(MOTORS_PORT,motorpin);
+	output_low(port, pin);
 	fakedelay(speed);
     }
     return;
 }
 
+// didn't work as a #define, probably optimizer's fault 
+inline bool pressed (uint8_t buttons, uint8_t motor) {
+    if (buttons & _BV(motor)) {
+	return true;
+    } else {
+	return false;
+    }
+}
 
-int main (void) {
-    uint8_t i;
+
+uint8_t main (void) {
+    uint8_t motor;
+    uint8_t port, pin;
     uint16_t speed[5];
     uint8_t buttonsup, buttonsdown;
     
     led_init();
     spi_init();
     adc_init();
+    motors_init();
+
+    led_off();
     
     // debug
     uart_init();
     stdout = &uart_output;
     
-    // TODO: motors_init()
-    set_output(MOTORS_DDR, MOTOR0_STEP_DD);
-    set_output(MOTORS_DDR, MOTOR0_DIR_DD);
-    output_low(MOTORS_PORT, MOTOR0_STEP);
-    output_low(MOTORS_PORT, MOTOR0_DIR);
-
     while (1) {
-	for (i = 0; i < 5; i++) {
-	    speed[i] = adc_read(i);
-	}
-
+	//led_off();
 	// TODO: func()
 	// read from buttons into shift registers
 	shiftreg_mode_load();
@@ -93,25 +124,51 @@ int main (void) {
 	buttonsdown = spi_transmit(SPI_TRANSMIT_DUMMY);
 
 	// debug
-	printf("up %u down %u\n", buttonsup, buttonsdown);
+	//printf("up %u down %u\n", buttonsup, buttonsdown);
 	
-	// set dir
-	// TODO: buttons{up,down} check functions
-	// TODO: set_dir() functions
-	led_off();
-	if ((buttonsup > 0) && (buttonsdown == 0)) {
-	    output_low(MOTORS_PORT, MOTOR0_DIR);
-	} else if ((buttonsup == 0) && (buttonsdown > 0)) {
-	    output_high(MOTORS_PORT, MOTOR0_DIR);
-	} else if ((buttonsup > 0) && (buttonsdown > 0)) {
-	    led_on();
+	for (motor = 0; motor < 5; motor++) {
+	    led_off();
+	    
+	    // debug
+	    //printf("%u\n", pressed(buttonsup, motor) ? 1 : 0);
+	    //printf("%u\n", pressed(buttonsdown,motor) ? 1 : 0);
+
+	    speed[motor] = adc_read(motor);
+
+	    // debug
+	    printf("MOTOR%u speed: %u\n", motor, speed[motor]);
+
+	    // TODO: similar in motor_step(), so refactor
+	    if (motor == 0) { port = MOTOR0_PORT; pin = MOTOR0_DIR; }
+	    if (motor == 1) { port = MOTOR1_PORT; pin = MOTOR1_DIR; }
+	    if (motor == 2) { port = MOTOR2_PORT; pin = MOTOR2_DIR; }
+	    if (motor == 3) { port = MOTOR3_PORT; pin = MOTOR3_DIR; }
+	    if (motor == 4) { port = MOTOR4_PORT; pin = MOTOR4_DIR; }
+	    
+	    // set dir
+	    // TODO: buttons{up,down} check functions
+	    // TODO: set_dir() functions
+	    if (pressed(buttonsup, motor) &&
+		pressed(buttonsdown, motor)) {
+		printf("MOTOR%u both\n", motor);
+		led_on();
+	    } else if (pressed(buttonsup, motor) &&
+		       !(pressed(buttonsdown, motor))) {
+		printf("MOTOR%u up\n", motor);
+		output_low(port, pin);
+	    } else if (!(pressed(buttonsup, motor)) &&
+		       pressed(buttonsdown, motor)) {
+		printf("MOTOR%u down\n", motor);
+		output_high(port, pin);
+	    }
+	    
+	    // roll motor
+	    if (pressed(buttonsup, motor) !=
+		pressed(buttonsdown, motor)) {
+		printf("MOTOR%u step\n", motor);
+		motor_step(motor, speed[motor]);
+	    }
 	}
-	
-	// roll motor
-	if ((buttonsup > 0) != (buttonsdown > 0)) {
-	    motor_step(0, speed);
-	}
-    }
-    
+    }    
     return 0;
 }
