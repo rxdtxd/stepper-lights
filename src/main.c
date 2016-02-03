@@ -83,7 +83,7 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     return;
 }
 
-// didn't work as a #define, probably optimizer's fault 
+// didn't work as a #define, probably optimizer's fault
 inline bool pressed (uint8_t buttons, uint8_t motor) {
     if (buttons & _BV(motor)) {
 	return true;
@@ -125,10 +125,9 @@ uint8_t main (void) {
 
 	// debug
 	//printf("up %u down %u\n", buttonsup, buttonsdown);
-	
+
+	led_off();
 	for (motor = 0; motor < 5; motor++) {
-	    led_off();
-	    
 	    // debug
 	    //printf("%u\n", pressed(buttonsup, motor) ? 1 : 0);
 	    //printf("%u\n", pressed(buttonsdown,motor) ? 1 : 0);
