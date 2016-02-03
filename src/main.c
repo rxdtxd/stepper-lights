@@ -73,15 +73,7 @@ inline void motor_set_dir (uint8_t motor, uint8_t dir) {
 
 inline void motor_step (uint8_t motor, uint16_t speed) {
     uint8_t i;
-    uint8_t port, pin;
     uint32_t tmp;
-
-    // FIXME: unneeded indirection, factor into macro?..
-    if (motor == 0) { port = MOTOR0_PORT; pin = MOTOR0_STEP; }
-    if (motor == 1) { port = MOTOR1_PORT; pin = MOTOR1_STEP; }
-    if (motor == 2) { port = MOTOR2_PORT; pin = MOTOR2_STEP; }
-    if (motor == 3) { port = MOTOR3_PORT; pin = MOTOR3_STEP; }
-    if (motor == 4) { port = MOTOR4_PORT; pin = MOTOR4_STEP; }
 
     // avoid stepper resonance regions (determined experimentally)
 #define SPEEDMIN 20 //135
@@ -91,9 +83,18 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     speed = SPEEDMIN + (uint16_t)(tmp / 1023);
     
     for (i = 0; i < 10; i++) { // FIXME: magicnum
-	output_high(port, pin);
+	if (motor == 0) { output_high(MOTOR0_PORT, MOTOR0_STEP); }
+	if (motor == 1) { output_high(MOTOR1_PORT, MOTOR1_STEP); }
+	if (motor == 2) { output_high(MOTOR2_PORT, MOTOR2_STEP); }
+	if (motor == 3) { output_high(MOTOR3_PORT, MOTOR3_STEP); }
+	if (motor == 4) { output_high(MOTOR4_PORT, MOTOR4_STEP); }
 	fake_delay(speed);
-	output_low(port, pin);
+	
+	if (motor == 0) { output_low(MOTOR0_PORT, MOTOR0_STEP); }
+	if (motor == 1) { output_low(MOTOR1_PORT, MOTOR1_STEP); }
+	if (motor == 2) { output_low(MOTOR2_PORT, MOTOR2_STEP); }
+	if (motor == 3) { output_low(MOTOR3_PORT, MOTOR3_STEP); }
+	if (motor == 4) { output_low(MOTOR4_PORT, MOTOR4_STEP); }
 	fake_delay(speed);
     }
     return;
