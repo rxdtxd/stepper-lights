@@ -12,10 +12,6 @@
 // data to transmit if you only really want to read data
 #define SPI_TRANSMIT_DUMMY 0b01010101
 
-// shift register PL (parallel load) line operation
-#define shiftreg_mode_load()     output_low(SPI_PORT, SPI_SS)
-#define shiftreg_mode_transmit() output_high(SPI_PORT, SPI_SS)
-
 // configure i/o for proper spi transmissions
 inline void spi_init (void) {
 

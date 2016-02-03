@@ -9,12 +9,12 @@
 #include "adc.h"
 #include "iocontrol.h"
 #include "spi.h"
-/* #include "uart.h" */
+/* #include "uart.h" // debug terminal */
 
 
 // FIXME: move to separate file for reuse
 // FIXME: cycle overhead is huge for _delay_us()
-void fakedelay (uint16_t times) {
+void fake_delay (uint16_t times) {
     volatile uint16_t i;
     for (i = 0; i < times; i++) {
 	// NOTE: DRV8825 datasheet specifies 4 us minimum step period,
@@ -49,6 +49,8 @@ inline void motors_init (void) {
     set_output(MOTOR4_DDR, MOTOR4_DIR_DD);
     output_low(MOTOR4_PORT, MOTOR4_STEP);
     output_low(MOTOR4_PORT, MOTOR4_DIR);
+
+    return;
 }
 
 inline void motor_step (uint8_t motor, uint16_t speed) {
@@ -57,7 +59,6 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     uint32_t tmp;
 
     // FIXME: unneeded indirection, factor into macro?..
-    if (motor > 4) return;
     if (motor == 0) { port = MOTOR0_PORT; pin = MOTOR0_STEP; }
     if (motor == 1) { port = MOTOR1_PORT; pin = MOTOR1_STEP; }
     if (motor == 2) { port = MOTOR2_PORT; pin = MOTOR2_STEP; }
@@ -73,10 +74,19 @@ inline void motor_step (uint8_t motor, uint16_t speed) {
     
     for (i = 0; i < 10; i++) { // FIXME: magicnum
 	output_high(port, pin);
-	fakedelay(speed);
+	fake_delay(speed);
 	output_low(port, pin);
-	fakedelay(speed);
+	fake_delay(speed);
     }
+    return;
+}
+
+inline void shiftreg_load (void) {
+    output_low(SPI_PORT, SPI_SS);
+    _delay_us(0.05); // 74165's datasheet says 15 ns minimum
+    output_high(SPI_PORT, SPI_SS);
+    _delay_us(0.05);
+    
     return;
 }
 
@@ -101,33 +111,34 @@ int main (void) {
     adc_init();
     motors_init();
 
-    led_off();
-    
     /* // debug */
     /* uart_init(); */
     /* stdout = &uart_output; */
-    
+
     while (1) {
-	//led_off();
-	// TODO: func()
-	// read from buttons into shift registers
-	shiftreg_mode_load();
-	_delay_us(0.05); // 165 datasheet says 15 ns minimum
-	shiftreg_mode_transmit();
-	_delay_us(0.05);
+	// read from buttons into shift registers ...
+	shiftreg_load();
 	
-	// read from shift registers into microcontroller
+	// ... and then microcontroller
 	bu = spi_transmit(SPI_TRANSMIT_DUMMY);
 	bd = spi_transmit(SPI_TRANSMIT_DUMMY);
 
 	led_off();
+	
 	for (motor = 0; motor < 5; motor++) {
 	    if (pressed(bu, motor) && pressed(bd, motor)) {
 		led_on();
 		continue;
 	    }
-	    
-	    speed[motor] = adc_read(motor);
+
+	    // HACK: FIXME: first used symbol for arduino nano had
+	    // ADC port (PORTC proper, port "A" in weirdoland) reversed,
+	    // so had to improvise with jumpers on the board
+	    if (motor == 0) speed[motor] = adc_read(6);
+	    if (motor == 1) speed[motor] = adc_read(1);
+	    if (motor == 2) speed[motor] = adc_read(2);
+	    if (motor == 3) speed[motor] = adc_read(3);
+	    if (motor == 4) speed[motor] = adc_read(7);
 
 	    // TODO: similar in motor_step(), so refactor
 	    if (motor == 0) { port = MOTOR0_PORT; pin = MOTOR0_DIR; }
@@ -137,7 +148,7 @@ int main (void) {
 	    if (motor == 4) { port = MOTOR4_PORT; pin = MOTOR4_DIR; }
 	    
 	    // set dir
-	    // TODO: set_dir() functions
+	    // TODO: func()
 	    if (pressed(bu, motor) && !pressed(bd, motor)) {
 		output_low(port, pin);
 	    } else if (!pressed(bu, motor) && pressed(bd, motor)) {
