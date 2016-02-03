@@ -150,22 +150,18 @@ uint8_t main (void) {
 	    // TODO: set_dir() functions
 	    if (pressed(buttonsup, motor) &&
 		pressed(buttonsdown, motor)) {
-		printf("MOTOR%u both\n", motor);
 		led_on();
 	    } else if (pressed(buttonsup, motor) &&
 		       !(pressed(buttonsdown, motor))) {
-		printf("MOTOR%u up\n", motor);
 		output_low(port, pin);
 	    } else if (!(pressed(buttonsup, motor)) &&
 		       pressed(buttonsdown, motor)) {
-		printf("MOTOR%u down\n", motor);
 		output_high(port, pin);
 	    }
 	    
 	    // roll motor
 	    if (pressed(buttonsup, motor) !=
 		pressed(buttonsdown, motor)) {
-		printf("MOTOR%u step\n", motor);
 		motor_step(motor, speed[motor]);
 	    }
 	}
