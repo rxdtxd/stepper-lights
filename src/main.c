@@ -65,7 +65,7 @@ int main (void) {
     leds_init();
     spi_init();
     adc_init();
-
+    
     // debug
     uart_init();
     stdout = &uart_output;
@@ -77,25 +77,28 @@ int main (void) {
     output_low(MOTORS_PORT, MOTOR0_DIR);
 
     // TODO: testing, remove
-    set_input(MOTORS_DDR, MOTOR0_UP_DD);
-    set_input(MOTORS_DDR, MOTOR0_DOWN_DD);
-    
+    /* set_input(MOTORS_DDR, MOTOR0_UP_DD); */
+    /* set_input(MOTORS_DDR, MOTOR0_DOWN_DD); */
+
     while (1) {
 	speed = adc_read(6);  // FIXME: iterate through 5 ADC pins
 
 	// debug (1 chan)
-	buttonsup = MOTOR0_PIN & _BV(MOTOR0_UP);
-	buttonsdown = MOTOR0_PIN & _BV(MOTOR0_DOWN);
+	/* buttonsup = MOTOR0_PIN & _BV(MOTOR0_UP); */
+	/* buttonsdown = MOTOR0_PIN & _BV(MOTOR0_DOWN); */
 
 	/* // TODO: func() read into shift registers from buttons */
-	/* shiftreg_mode_load(); */
-	/* _delay_us(0.05); // 165 datasheet says 15 ns minimum */
-	/* shiftreg_mode_transmit(); */
-	/* _delay_us(0.05); */
+	shiftreg_mode_load();
+	_delay_us(0.05); // 165 datasheet says 15 ns minimum
+	shiftreg_mode_transmit();
+	_delay_us(0.05);
 	
 	/* // read from shift registers into microcontroller */
-	/* buttonsup = spi_transmit(SPI_TRANSMIT_DUMMY); */
-	/* buttonsdown = spi_transmit(SPI_TRANSMIT_DUMMY); */
+	buttonsup = spi_transmit(SPI_TRANSMIT_DUMMY);
+	buttonsdown = spi_transmit(SPI_TRANSMIT_DUMMY);
+
+	// debug
+	//printf("up %u down %u\n", buttonsup, buttonsdown);
 	
 	// set dir
 	// FIXME: buttons{up,down} check functions

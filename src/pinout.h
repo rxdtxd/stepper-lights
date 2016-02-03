@@ -35,18 +35,18 @@
 
 // motor buttons
 // FIXME: testing, change to proper
-#define MOTOR0_UP_DD   DDD6
-#define MOTOR0_DOWN_DD DDD7
-#define MOTOR0_PIN     PIND
-#define MOTOR0_UP      PIND6
-#define MOTOR0_DOWN    PIND7
+/* #define MOTOR0_UP_DD   DDD6 */
+/* #define MOTOR0_DOWN_DD DDD7 */
+/* #define MOTOR0_PIN     PIND */
+/* #define MOTOR0_UP      PIND6 */
+/* #define MOTOR0_DOWN    PIND7 */
 
 // leds
 #define LED_DDR DDRC
-#define LED0_DD DDC2
+#define LED0_DD DDC5
 
 #define LED_PORT PORTC
-#define LEDBASE  PORTC2
+#define LEDBASE  PORTC5  // A5?
 
 // TODO: move to iocontrol.h?
 // FIXME: too complicated for 1 led
