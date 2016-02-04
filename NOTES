@@ -52,6 +52,8 @@ have swapped outputs, too).
 Using Neutrik [ne8mc-1](NE8MC-1 cable connectors) and [ne8fbh](NE8FBH
 PCB receptacles).
 
+[t568b](T568B) wiring.
+
 
 # 7805 24 V -> 5 V
 
@@ -60,3 +62,4 @@ PCB receptacles).
 
 [ne8mc-1]: http://www.neutrik.com/en/industrial/ethercon/ethercon-cable-connector-carrier/ne8mc-1
 [ne8fbh]: http://www.neutrik.com/en/industrial/ethercon/b-series/ne8fbh
+[t568b]: https://en.wikipedia.org/wiki/Category_5_cable
