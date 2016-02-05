@@ -163,7 +163,7 @@ int main (void) {
 	    adcchan++;
 	    if (adcchan >= 5) adcchan = 0;
 
-	    // HACK with lame pins
+	    // HACK with lame jumpers
 	    if (adcchan == 0) adc_set_chan(6);
 	    if (adcchan == 1) adc_set_chan(1);
 	    if (adcchan == 2) adc_set_chan(2);
@@ -196,10 +196,13 @@ int main (void) {
 		} else if (motor[i].bd) {
 		    motor_set_dir(i, DIR_DOWN);
 		}
-		// allow ramp-down
-	    } else if (motor[i].curspeed != motor[i].trgspeed) {
+	    }
+	    // allow ramp-down
+	    else if (motor[i].curspeed != motor[i].trgspeed) {
 		motor[i].isrunning = true;
-	    } else if (motor[i].curspeed == SPEEDMIN) {
+	    }
+	    // mark as ok-to-stop
+	    else if (motor[i].curspeed == SPEEDMIN) {
 		motor[i].isrunning = false;
 	    }
 	}
@@ -215,7 +218,8 @@ int main (void) {
 		    motor[i].curspeed -= 1;
 		}
 	    }
-	    
+
+	    // run at current speed
 	    for (cycle = 0; cycle < RUNCYCLES; cycle++) {
 		for (i = 0; i < NMOTORS; i++) {		
 		    // either button pressed or ramp-down
