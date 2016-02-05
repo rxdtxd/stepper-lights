@@ -83,7 +83,7 @@ inline uint16_t motor_get_speed (uint8_t motor) {
     return s;
 }
 
-inline uint16_t motor_adjust_speed (uint16_t s) {
+inline uint16_t motor_adj_speed (uint16_t s) {
     uint32_t tmp;
 
     // avoid stepper resonance regions (determined experimentally)
@@ -171,7 +171,7 @@ int main (void) {
 		} else {
 		    // reset counter
 		    speed[motor] = motor_get_speed(motor);
-		    counter[motor] = motor_adjust_speed(speed[motor]);
+		    counter[motor] = motor_adj_speed(speed[motor]) * 64;
 
 		    // set dir
 		    if (pressed(bu, motor)) {
