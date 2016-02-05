@@ -18,6 +18,16 @@
 #define SPEEDMIN 100
 #define SPEEDRANGE (SPEEDMIN-SPEEDMAX)
 
+inline uint16_t motor_scale_speed (uint16_t potval) {
+    uint32_t tmp;
+
+    // avoid stepper resonance regions (determined experimentally)
+    tmp = (uint32_t)potval * SPEEDRANGE;
+    potval = SPEEDMAX + (uint16_t)(tmp / 1023);
+    
+    return potval;
+}
+
 #define DIR_DOWN 0
 #define DIR_UP 1
 
@@ -78,16 +88,6 @@ inline void motor_set_dir (uint8_t motor, uint8_t dir) {
     }
     
     return;
-}
-
-inline uint16_t motor_scale_speed (uint16_t potval) {
-    uint32_t tmp;
-
-    // avoid stepper resonance regions (determined experimentally)
-    tmp = (uint32_t)potval * SPEEDRANGE;
-    potval = SPEEDMAX + (uint16_t)(tmp / 1023);
-    
-    return potval;
 }
 
 inline void motor_step (uint8_t motor) {
