@@ -12,6 +12,15 @@
 /* #include "uart.h" // debug terminal */
 
 
+#define DIR_DOWN 0
+#define DIR_UP 1
+
+
+// motor desired speed and countdown timer for pulsing
+uint16_t speed[5]; // TODO: can be factored out
+uint16_t counter[5];
+
+
 // FIXME: move to separate file for reuse
 // FIXME: cycle overhead is huge for _delay_us()
 void fake_delay (uint16_t times) {
@@ -54,7 +63,7 @@ inline void motors_init (void) {
 }
 
 inline void motor_set_dir (uint8_t motor, uint8_t dir) {
-    if (dir == 0) {
+    if (dir == DIR_DOWN) {
 	if (motor == 0) { output_low(MOTOR0_PORT, MOTOR0_DIR); }
 	if (motor == 1) { output_low(MOTOR1_PORT, MOTOR1_DIR); }
 	if (motor == 2) { output_low(MOTOR2_PORT, MOTOR2_DIR); }
@@ -71,32 +80,41 @@ inline void motor_set_dir (uint8_t motor, uint8_t dir) {
     return;
 }
 
-inline void motor_step (uint8_t motor, uint16_t speed) {
-    uint8_t i;
+inline uint16_t motor_get_speed (uint8_t motor) {
+    uint16_t s;
+    
+    // HACK: FIXME: first used symbol for arduino nano
+    // had ADC port (PORTC proper, port "A" in weirdoland)
+    // reversed, so had to improvise with jumpers
+    if (motor == 0) s = adc_read(6);
+    else if (motor == 1) s = adc_read(1);
+    else if (motor == 2) s = adc_read(2);
+    else if (motor == 3) s = adc_read(3);
+    else if (motor == 4) s = adc_read(7);
+
+    return s;
+}
+
+inline uint16_t motor_adjust_speed (uint16_t s) {
     uint32_t tmp;
 
     // avoid stepper resonance regions (determined experimentally)
 #define SPEEDMIN 20 //135
 #define SPEEDMAX 1023 //800
 #define SPEEDRANGE (SPEEDMAX-SPEEDMIN)
-    tmp = (uint32_t)speed * SPEEDRANGE;
-    speed = SPEEDMIN + (uint16_t)(tmp / 1023);
+    tmp = (uint32_t)s * SPEEDRANGE;
+    s = SPEEDMIN + (uint16_t)(tmp / 1023);
     
-    for (i = 0; i < 10; i++) { // FIXME: magicnum
-	if (motor == 0) { output_high(MOTOR0_PORT, MOTOR0_STEP); }
-	if (motor == 1) { output_high(MOTOR1_PORT, MOTOR1_STEP); }
-	if (motor == 2) { output_high(MOTOR2_PORT, MOTOR2_STEP); }
-	if (motor == 3) { output_high(MOTOR3_PORT, MOTOR3_STEP); }
-	if (motor == 4) { output_high(MOTOR4_PORT, MOTOR4_STEP); }
-	fake_delay(speed);
-	
-	if (motor == 0) { output_low(MOTOR0_PORT, MOTOR0_STEP); }
-	if (motor == 1) { output_low(MOTOR1_PORT, MOTOR1_STEP); }
-	if (motor == 2) { output_low(MOTOR2_PORT, MOTOR2_STEP); }
-	if (motor == 3) { output_low(MOTOR3_PORT, MOTOR3_STEP); }
-	if (motor == 4) { output_low(MOTOR4_PORT, MOTOR4_STEP); }
-	fake_delay(speed);
-    }
+    return s;
+}
+
+inline void motor_step (uint8_t motor) {
+    if (motor == 0) { output_toggle(MOTOR0_PORT, MOTOR0_STEP); }
+    else if (motor == 1) { output_toggle(MOTOR1_PORT, MOTOR1_STEP); }
+    else if (motor == 2) { output_toggle(MOTOR2_PORT, MOTOR2_STEP); }
+    else if (motor == 3) { output_toggle(MOTOR3_PORT, MOTOR3_STEP); }
+    else if (motor == 4) { output_toggle(MOTOR4_PORT, MOTOR4_STEP); }
+
     return;
 }
 
@@ -121,7 +139,6 @@ inline bool pressed (uint8_t buttons, uint8_t motor) {
 
 int main (void) {
     uint8_t motor;
-    uint16_t speed[5];
     uint8_t bu, bd;  // buttons up, buttons down
     
     led_init();
@@ -133,6 +150,10 @@ int main (void) {
     /* uart_init(); */
     /* stdout = &uart_output; */
 
+    for (motor = 0; motor < 5; motor++) {
+	counter[motor] = 0;
+    }
+    
     while (1) {
 	// read from buttons into shift registers ...
 	shiftreg_load();
@@ -142,32 +163,35 @@ int main (void) {
 	bd = spi_transmit(SPI_TRANSMIT_DUMMY);
 
 	led_off();
-	
+
 	for (motor = 0; motor < 5; motor++) {
+	    if (!pressed(bu, motor) && !pressed(bd, motor)) {
+		continue;
+	    }
+
 	    if (pressed(bu, motor) && pressed(bd, motor)) {
 		led_on();
 		continue;
 	    }
-
-	    // HACK: FIXME: first used symbol for arduino nano had
-	    // ADC port (PORTC proper, port "A" in weirdoland) reversed,
-	    // so had to improvise with jumpers on the board
-	    if (motor == 0) speed[motor] = adc_read(6);
-	    else if (motor == 1) speed[motor] = adc_read(1);
-	    else if (motor == 2) speed[motor] = adc_read(2);
-	    else if (motor == 3) speed[motor] = adc_read(3);
-	    else if (motor == 4) speed[motor] = adc_read(7);
-	    
-	    // set dir
-	    if (pressed(bu, motor) && !pressed(bd, motor)) {
-		motor_set_dir(motor, 0); // FIXME: magicnum
-	    } else if (!pressed(bu, motor) && pressed(bd, motor)) {
-		motor_set_dir(motor, 1); // FIXME: magicnum
-	    }
-	    
-	    // roll
+	    	    
+	    // 
 	    if (pressed(bu, motor) != pressed(bd, motor)) {
-		motor_step(motor, speed[motor]);
+		if (counter[motor] > 0) {
+		    counter[motor] -= 1;
+		} else {
+		    // reset counter
+		    speed[motor] = motor_get_speed(motor);
+		    counter[motor] = motor_adjust_speed(speed[motor]);
+
+		    // set dir
+		    if (pressed(bu, motor)) {
+			motor_set_dir(motor, DIR_UP);
+		    } else if (pressed(bd, motor)) {
+			motor_set_dir(motor, DIR_DOWN);
+		    }
+
+		    motor_step(motor);
+		}
 	    }
 	}
     }    
