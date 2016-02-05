@@ -138,8 +138,10 @@ inline bool pressed (uint8_t buttons, uint8_t motor) {
 int main (void) {
     uint8_t bu, bd;      // buttons up, buttons down (read-in buffers)
     uint8_t i;           // iterator
-    uint8_t ramp, cycle; // iterators
     uint8_t adcchan = 0;
+
+    uint8_t ramp;
+    uint16_t cycle;
     
     motor_t motor[NMOTORS];
 
@@ -198,11 +200,27 @@ int main (void) {
 	for (i = 0; i < NMOTORS; i++) {
 	    motor[i].bu = pressed(bu, i) ? true : false;
 	    motor[i].bd = pressed(bd, i) ? true : false;
+
+	    if (motor[i].bu != motor[i].bd) {
+		motor[i].isrunning = true;
+		
+		// set dir
+		if (motor[i].bu) {
+		    motor_set_dir(i, DIR_UP);
+		} else if (motor[i].bd) {
+		    motor_set_dir(i, DIR_DOWN);
+		}
+	    } else if (motor[i].curspeed != motor[i].trgspeed) {
+		motor[i].isrunning = true;
+	    } else if (motor[i].curspeed == SPEEDMAX) {
+		motor[i].isrunning = false;
+	    }
 	}
 	
 	led_off();
 
-	for (ramp = 0; ramp < 16; ramp++) {
+	for (ramp = 0; ramp < 8; ramp++) {
+	    // push current speed towards target
 	    for (i = 0; i < NMOTORS; i++) {
 		if (motor[i].curspeed < motor[i].trgspeed) {
 		    motor[i].curspeed += 1;
@@ -212,36 +230,29 @@ int main (void) {
 		}
 	    }
 	    
-	    for (cycle = 0; cycle < 255; cycle++) {
+	    for (cycle = 0; cycle < 1023; cycle++) {
 		for (i = 0; i < NMOTORS; i++) {		
 		    // both buttons pressed
 		    if (motor[i].bu && motor[i].bd) {
 			led_on();
 			motor[i].trgspeed = SPEEDMAX;
-			continue;
 		    }
 		    
-		    // either button pressed
-		    if (motor[i].bu != motor[i].bd) {
+		    // either button pressed or ramp-down
+		    if ((motor[i].bu != motor[i].bd) ||
+			(motor[i].isrunning)) {
 			if (motor[i].counter > 0) {
 			    motor[i].counter -= 1;
 			} else {
 			    // reset counter
 			    motor[i].counter = motor[i].curspeed;
-			    
-			    // set dir
-			    if (motor[i].bu) {
-				motor_set_dir(i, DIR_UP);
-			    } else /* if (motor[i].bd) */ {
-				motor_set_dir(i, DIR_DOWN);
-			    }
-			    
+			    			    
 			    motor_step(i);
 			}
 		    }
 		}
 	    }
 	}
-    }    
+    }
     return 0;
 }
