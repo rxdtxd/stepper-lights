@@ -124,16 +124,6 @@ inline void shiftreg_load (void) {
     return;
 }
 
-// didn't work as a #define, probably optimizer's fault
-// TODO: replace with bit_is_set(byte, bit)
-inline bool pressed (uint8_t buttons, uint8_t motor) {
-    if (buttons & _BV(motor)) {
-	return true;
-    } else {
-	return false;
-    }
-}
-
 
 int main (void) {
     uint8_t bu, bd;      // buttons up, buttons down (read-in buffers)
@@ -198,8 +188,8 @@ int main (void) {
 	bu = spi_transmit(SPI_TRANSMIT_DUMMY);
 	bd = spi_transmit(SPI_TRANSMIT_DUMMY);
 	for (i = 0; i < NMOTORS; i++) {
-	    motor[i].bu = pressed(bu, i) ? true : false;
-	    motor[i].bd = pressed(bd, i) ? true : false;
+	    motor[i].bu = bit_is_set(bu, i) ? true : false;
+	    motor[i].bd = bit_is_set(bd, i) ? true : false;
 
 	    if (motor[i].bu != motor[i].bd) {
 		motor[i].isrunning = true;
