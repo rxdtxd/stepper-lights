@@ -13,9 +13,10 @@
 
 #define NMOTORS 5
 
-#define SPEEDMIN 10 //20
-#define SPEEDMAX 100 //380
-#define SPEEDRANGE (SPEEDMAX-SPEEDMIN)
+// SPEED is a misnomer - it's actually the "period" between STEPs
+#define SPEEDMAX 10
+#define SPEEDMIN 100
+#define SPEEDRANGE (SPEEDMIN-SPEEDMAX)
 
 #define DIR_DOWN 0
 #define DIR_UP 1
@@ -79,14 +80,14 @@ inline void motor_set_dir (uint8_t motor, uint8_t dir) {
     return;
 }
 
-inline uint16_t motor_scale_speed (uint16_t speed) {
+inline uint16_t motor_scale_speed (uint16_t potval) {
     uint32_t tmp;
 
     // avoid stepper resonance regions (determined experimentally)
-    tmp = (uint32_t)speed * SPEEDRANGE;
-    speed = SPEEDMIN + (uint16_t)(tmp / 1023);
+    tmp = (uint32_t)potval * SPEEDRANGE;
+    potval = SPEEDMAX + (uint16_t)(tmp / 1023);
     
-    return speed;
+    return potval;
 }
 
 inline void motor_step (uint8_t motor) {
@@ -125,8 +126,8 @@ int main (void) {
 	motor[i].bu = false;
 	motor[i].bd = false;
 	motor[i].pot = 0;
-	motor[i].trgspeed = SPEEDMAX;
-	motor[i].curspeed = SPEEDMAX;
+	motor[i].trgspeed = SPEEDMIN;
+	motor[i].curspeed = SPEEDMIN;
 	motor[i].counter = 0;
     }
     
@@ -151,7 +152,7 @@ int main (void) {
 		motor[adcchan].trgspeed =
 		    motor_scale_speed(motor[adcchan].pot);
 	    } else {
-		motor[adcchan].trgspeed = SPEEDMAX;
+		motor[adcchan].trgspeed = SPEEDMIN;
 	    }
 
 	    adcchan++;
@@ -186,7 +187,7 @@ int main (void) {
 		}
 	    } else if (motor[i].curspeed != motor[i].trgspeed) {
 		motor[i].isrunning = true;
-	    } else if (motor[i].curspeed == SPEEDMAX) {
+	    } else if (motor[i].curspeed == SPEEDMIN) {
 		motor[i].isrunning = false;
 	    }
 	}
@@ -209,7 +210,7 @@ int main (void) {
 		    // both buttons pressed
 		    if (motor[i].bu && motor[i].bd) {
 			led_on();
-			motor[i].trgspeed = SPEEDMAX;
+			motor[i].trgspeed = SPEEDMIN;
 		    }
 		    
 		    // either button pressed or ramp-down
