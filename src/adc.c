@@ -21,7 +21,7 @@ void adc_init (void) {
 
 
 uint16_t adc_read (uint8_t channel) {
-    adc_select_chan(channel);
+    adc_set_chan(channel);
     adc_start();
     
     while( adc_is_running() );

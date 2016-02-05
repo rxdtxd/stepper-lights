@@ -125,8 +125,9 @@ int main (void) {
     uint8_t bu, bd;  // buttons up, buttons down
     uint8_t motor;   // iterator
     // motor desired speed and countdown timer for STEP
-    uint16_t speed[5]; // TODO: can be factored out
+    uint16_t speed[5];
     uint16_t counter[5];
+    uint8_t adcchan = 0;
 
     for (motor = 0; motor < 5; motor++) {
 	counter[motor] = 0;
@@ -140,8 +141,28 @@ int main (void) {
     /* // debug */
     /* uart_init(); */
     /* stdout = &uart_output; */
-    
+
+    adc_set_chan(adcchan);
+    adc_start();
+
     while (1) {
+	// keep the ADC running in background
+	if ( !( adc_is_running() )) {
+	    speed[adcchan] = adc_get();
+
+	    adcchan++;
+	    if (adcchan >= 5) adcchan = 0;
+
+	    // HACK with lame pins
+	    if (adcchan == 0) adc_set_chan(6);
+	    if (adcchan == 1) adc_set_chan(1);
+	    if (adcchan == 2) adc_set_chan(2);
+	    if (adcchan == 3) adc_set_chan(3);
+	    if (adcchan == 4) adc_set_chan(7);
+
+	    adc_start();
+	}
+
 	// read from buttons into shift registers ...
 	shiftreg_load();
 	
@@ -169,7 +190,6 @@ int main (void) {
 		    counter[motor] -= 1;
 		} else {
 		    // reset counter
-		    speed[motor] = motor_get_speed(motor);
 		    counter[motor] = motor_adj_speed(speed[motor]);
 
 		    // set dir

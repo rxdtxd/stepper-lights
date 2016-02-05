@@ -10,15 +10,20 @@
 #define adc_start() ADCSRA |= _BV(ADSC)
 
 // ADMUX contains settings, so mask in carefully
-#define adc_select_chan(chan) ADMUX = (ADMUX & 0b11100000) | (chan & 0b00001111)
+#define adc_set_chan(chan) ADMUX = (ADMUX & 0b11100000) | (chan & 0b00001111)
+
+#define adc_get_chan() ADMUX & 0b00001111
 
 // 
 #define adc_is_running() ADCSRA & _BV(ADSC)
 
+//
+#define adc_get() ADC
+
 // set up ADC hardware
 void adc_init (void);
 
-// read one value
+// blocking-read wrapper
 uint16_t adc_read (uint8_t);
 
 #endif /* _ADC_H_ */
