@@ -11,6 +11,7 @@
 #include "spi.h"
 /* #include "uart.h" // debug terminal */
 
+#define NMOTORS 5
 
 #define SPEEDMIN 10 //20
 #define SPEEDMAX 100 //380
@@ -18,6 +19,17 @@
 
 #define DIR_DOWN 0
 #define DIR_UP 1
+
+typedef struct {
+    bool         isrunning; // whether currently running or not
+    uint16_t     position;  // STEPs taken from top (0)
+    bool         bu;        // button up pressed
+    bool         bd;        // button down pressed
+    uint16_t     pot;       // speed pot raw reading
+    int16_t      trgspeed;  // target speed
+    int16_t      curspeed;  // current speed
+    uint16_t     counter;   // countdown timer for STEP phase toggling
+} motor_t;
 
 
 inline void motors_init (void) {
@@ -67,29 +79,31 @@ inline void motor_set_dir (uint8_t motor, uint8_t dir) {
     return;
 }
 
-inline uint16_t motor_get_speed (uint8_t motor) {
-    uint16_t s;
+// TODO: unused, remove
+inline uint16_t motor_read_pot (uint8_t motor) {
+    uint16_t pot;
     
     // HACK: FIXME: first used symbol for arduino nano
     // had ADC port (PORTC proper, port "A" in weirdoland)
     // reversed, so had to improvise with jumpers
-    if (motor == 0) s = adc_read(6);
-    else if (motor == 1) s = adc_read(1);
-    else if (motor == 2) s = adc_read(2);
-    else if (motor == 3) s = adc_read(3);
-    else if (motor == 4) s = adc_read(7);
+    if (motor == 0) pot = adc_read(6);
+    else if (motor == 1) pot = adc_read(1);
+    else if (motor == 2) pot = adc_read(2);
+    else if (motor == 3) pot = adc_read(3);
+    else if (motor == 4) pot = adc_read(7);
 
-    return s;
+    return pot;
 }
 
-inline uint16_t motor_adj_speed (uint16_t s) {
+// TODO: signed int
+inline uint16_t motor_adj_speed (uint16_t speed) {
     uint32_t tmp;
 
     // avoid stepper resonance regions (determined experimentally)
-    tmp = (uint32_t)s * SPEEDRANGE;
-    s = SPEEDMIN + (uint16_t)(tmp / 1023);
+    tmp = (uint32_t)speed * SPEEDRANGE;
+    speed = SPEEDMIN + (uint16_t)(tmp / 1023);
     
-    return s;
+    return speed;
 }
 
 inline void motor_step (uint8_t motor) {
@@ -112,6 +126,7 @@ inline void shiftreg_load (void) {
 }
 
 // didn't work as a #define, probably optimizer's fault
+// TODO: replace with bit_is_set(byte, bit)
 inline bool pressed (uint8_t buttons, uint8_t motor) {
     if (buttons & _BV(motor)) {
 	return true;
@@ -122,16 +137,22 @@ inline bool pressed (uint8_t buttons, uint8_t motor) {
 
 
 int main (void) {
-    uint8_t bu, bd;  // buttons up, buttons down
-    uint8_t motor;   // iterator
-    uint8_t times;   // iterator
-    // motor desired speed and countdown timer for STEP
-    uint16_t speed[5];
-    uint16_t counter[5];
+    uint8_t bu, bd;      // buttons up, buttons down (read-in buffers)
+    uint8_t i;           // iterator
+    uint8_t rampcycle;   // iterator
     uint8_t adcchan = 0;
+    
+    motor_t motor[NMOTORS];
 
-    for (motor = 0; motor < 5; motor++) {
-	counter[motor] = 0;
+    for (i = 0; i < NMOTORS; i++) {
+	motor[i].isrunning = false;
+	motor[i].position = 0;
+	motor[i].bu = false;
+	motor[i].bd = false;
+	motor[i].pot = 0;
+	motor[i].trgspeed = 0;
+	motor[i].curspeed = 0;
+	motor[i].counter = 0;
     }
     
     led_init();
@@ -147,9 +168,11 @@ int main (void) {
     adc_start();
 
     while (1) {
-	// keep the ADC running in background
+	// keep the ADC running "in background"
 	if ( !( adc_is_running() )) {
-	    speed[adcchan] = motor_adj_speed(adc_get());
+	    motor[adcchan].pot = adc_get();
+	    motor[adcchan].trgspeed =
+		motor_adj_speed(motor[adcchan].pot);
 
 	    adcchan++;
 	    if (adcchan >= 5) adcchan = 0;
@@ -164,44 +187,41 @@ int main (void) {
 	    adc_start();
 	}
 
-	// read from buttons into shift registers ...
+	// read in buttons
 	shiftreg_load();
-	
-	// ... and then microcontroller
 	bu = spi_transmit(SPI_TRANSMIT_DUMMY);
 	bd = spi_transmit(SPI_TRANSMIT_DUMMY);
-
+	for (i = 0; i < NMOTORS; i++) {
+	    motor[i].bu = pressed(bu, i) ? true : false;
+	    motor[i].bd = pressed(bd, i) ? true : false;
+	}
+	
 	led_off();
 
-	for (times = 0; times < 255; times++) {
-	    for (motor = 0; motor < 5; motor++) {
-		// not pressed
-		if (!pressed(bu, motor) && !pressed(bd, motor)) {
-		    continue;
-		}
-		
-		// both pressed
-		if (pressed(bu, motor) && pressed(bd, motor)) {
+	for (rampcycle = 0; rampcycle < 255; rampcycle++) {
+	    for (i = 0; i < NMOTORS; i++) {		
+                // both buttons pressed
+		if (motor[i].bu && motor[i].bd) {
 		    led_on();
-		    continue;
+\		    motor[i].trgspeed = 0;
 		}
-		
-		// up or down pressed
-		if (pressed(bu, motor) != pressed(bd, motor)) {
-		    if (counter[motor] > 0) {
-			counter[motor] -= 1;
+
+		// either button pressed
+		if (motor[i].bu != motor[i].bd) {
+		    if (motor[i].counter > 0) {
+			motor[i].counter -= 1;
 		    } else {
 			// reset counter
-			counter[motor] = speed[motor];
+			motor[i].counter = motor[i].curspeed;
 			
 			// set dir
-			if (pressed(bu, motor)) {
-			    motor_set_dir(motor, DIR_UP);
-			} else /* if (pressed(bd, motor) ) */ {
-			    motor_set_dir(motor, DIR_DOWN);
+			if (motor[i].bu) {
+			    motor_set_dir(i, DIR_UP);
+			} else /* if (motor[i].bd) */ {
+			    motor_set_dir(i, DIR_DOWN);
 			}
 			
-			motor_step(motor);
+			motor_step(i);
 		    }
 		}
 	    }
