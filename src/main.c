@@ -13,10 +13,8 @@
 
 
 #define SPEEDMIN 20 //135
-#define SPEEDMAX 1023 //800
+#define SPEEDMAX 380 //1023 //800
 #define SPEEDRANGE (SPEEDMAX-SPEEDMIN)
-
-#define COUNTER_TIMES 64
 
 #define DIR_DOWN 0
 #define DIR_UP 1
@@ -106,9 +104,9 @@ inline void motor_step (uint8_t motor) {
 
 inline void shiftreg_load (void) {
     output_low(SPI_PORT, SPI_SS);
-    _delay_us(0.05); // 74165's datasheet says 15 ns minimum
+    _delay_us(0.02); // 74165's datasheet says 15 ns minimum
     output_high(SPI_PORT, SPI_SS);
-    _delay_us(0.05);
+    _delay_us(0.02);
     
     return;
 }
@@ -172,13 +170,12 @@ int main (void) {
 		} else {
 		    // reset counter
 		    speed[motor] = motor_get_speed(motor);
-		    counter[motor] = motor_adj_speed(speed[motor]) *
-			COUNTER_TIMES;
+		    counter[motor] = motor_adj_speed(speed[motor]);
 
 		    // set dir
 		    if (pressed(bu, motor)) {
 			motor_set_dir(motor, DIR_UP);
-		    } else if (pressed(bd, motor)) {
+		    } else /* if (pressed(bd, motor) ) */ {
 			motor_set_dir(motor, DIR_DOWN);
 		    }
 
