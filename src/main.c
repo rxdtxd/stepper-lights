@@ -26,8 +26,8 @@ typedef struct {
     bool         bu;        // button up pressed
     bool         bd;        // button down pressed
     uint16_t     pot;       // speed pot raw reading
-    int16_t      trgspeed;  // target speed
-    int16_t      curspeed;  // current speed
+    uint16_t     trgspeed;  // target speed
+    uint16_t     curspeed;  // current speed
     uint16_t     counter;   // countdown timer for STEP phase toggling
 } motor_t;
 
@@ -95,8 +95,7 @@ inline uint16_t motor_read_pot (uint8_t motor) {
     return pot;
 }
 
-// TODO: signed int
-inline uint16_t motor_adj_speed (uint16_t speed) {
+inline uint16_t motor_scale_speed (uint16_t speed) {
     uint32_t tmp;
 
     // avoid stepper resonance regions (determined experimentally)
@@ -150,8 +149,8 @@ int main (void) {
 	motor[i].bu = false;
 	motor[i].bd = false;
 	motor[i].pot = 0;
-	motor[i].trgspeed = 0;
-	motor[i].curspeed = 0;
+	motor[i].trgspeed = SPEEDMAX;
+	motor[i].curspeed = SPEEDMAX;
 	motor[i].counter = 0;
     }
     
@@ -171,8 +170,13 @@ int main (void) {
 	// keep the ADC running "in background"
 	if ( !( adc_is_running() )) {
 	    motor[adcchan].pot = adc_get();
-	    motor[adcchan].trgspeed =
-		motor_adj_speed(motor[adcchan].pot);
+
+	    if (motor[adcchan].bu != motor[adcchan].bd) {
+		motor[adcchan].trgspeed =
+		    motor_scale_speed(motor[adcchan].pot);
+	    } else {
+		motor[adcchan].trgspeed = SPEEDMAX;
+	    }
 
 	    adcchan++;
 	    if (adcchan >= 5) adcchan = 0;
@@ -199,12 +203,22 @@ int main (void) {
 	led_off();
 
 	for (ramp = 0; ramp < 16; ramp++) {
+	    for (i = 0; i < NMOTORS; i++) {
+		if (motor[i].curspeed < motor[i].trgspeed) {
+		    motor[i].curspeed += 1;
+		}
+		if (motor[i].curspeed > motor[i].trgspeed) {
+		    motor[i].curspeed -= 1;
+		}
+	    }
+	    
 	    for (cycle = 0; cycle < 255; cycle++) {
 		for (i = 0; i < NMOTORS; i++) {		
 		    // both buttons pressed
 		    if (motor[i].bu && motor[i].bd) {
 			led_on();
-			motor[i].trgspeed = 0;
+			motor[i].trgspeed = SPEEDMAX;
+			continue;
 		    }
 		    
 		    // either button pressed
