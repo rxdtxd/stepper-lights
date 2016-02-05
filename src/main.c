@@ -79,22 +79,6 @@ inline void motor_set_dir (uint8_t motor, uint8_t dir) {
     return;
 }
 
-// TODO: unused, remove
-inline uint16_t motor_read_pot (uint8_t motor) {
-    uint16_t pot;
-    
-    // HACK: FIXME: first used symbol for arduino nano
-    // had ADC port (PORTC proper, port "A" in weirdoland)
-    // reversed, so had to improvise with jumpers
-    if (motor == 0) pot = adc_read(6);
-    else if (motor == 1) pot = adc_read(1);
-    else if (motor == 2) pot = adc_read(2);
-    else if (motor == 3) pot = adc_read(3);
-    else if (motor == 4) pot = adc_read(7);
-
-    return pot;
-}
-
 inline uint16_t motor_scale_speed (uint16_t speed) {
     uint32_t tmp;
 
