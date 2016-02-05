@@ -12,13 +12,14 @@
 /* #include "uart.h" // debug terminal */
 
 
+#define SPEEDMIN 20 //135
+#define SPEEDMAX 1023 //800
+#define SPEEDRANGE (SPEEDMAX-SPEEDMIN)
+
+#define COUNTER_TIMES 64
+
 #define DIR_DOWN 0
 #define DIR_UP 1
-
-
-// motor desired speed and countdown timer for pulsing
-uint16_t speed[5]; // TODO: can be factored out
-uint16_t counter[5];
 
 
 inline void motors_init (void) {
@@ -87,9 +88,6 @@ inline uint16_t motor_adj_speed (uint16_t s) {
     uint32_t tmp;
 
     // avoid stepper resonance regions (determined experimentally)
-#define SPEEDMIN 20 //135
-#define SPEEDMAX 1023 //800
-#define SPEEDRANGE (SPEEDMAX-SPEEDMIN)
     tmp = (uint32_t)s * SPEEDRANGE;
     s = SPEEDMIN + (uint16_t)(tmp / 1023);
     
@@ -126,8 +124,11 @@ inline bool pressed (uint8_t buttons, uint8_t motor) {
 
 
 int main (void) {
-    uint8_t motor;
     uint8_t bu, bd;  // buttons up, buttons down
+    uint8_t motor;   // iterator
+    // motor desired speed and countdown timer for STEP
+    uint16_t speed[5]; // TODO: can be factored out
+    uint16_t counter[5];
 
     for (motor = 0; motor < 5; motor++) {
 	counter[motor] = 0;
@@ -171,7 +172,8 @@ int main (void) {
 		} else {
 		    // reset counter
 		    speed[motor] = motor_get_speed(motor);
-		    counter[motor] = motor_adj_speed(speed[motor]) * 64;
+		    counter[motor] = motor_adj_speed(speed[motor]) *
+			COUNTER_TIMES;
 
 		    // set dir
 		    if (pressed(bu, motor)) {
