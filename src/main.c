@@ -139,7 +139,7 @@ inline bool pressed (uint8_t buttons, uint8_t motor) {
 int main (void) {
     uint8_t bu, bd;      // buttons up, buttons down (read-in buffers)
     uint8_t i;           // iterator
-    uint8_t rampcycle;   // iterator
+    uint8_t ramp, cycle; // iterators
     uint8_t adcchan = 0;
     
     motor_t motor[NMOTORS];
@@ -198,30 +198,32 @@ int main (void) {
 	
 	led_off();
 
-	for (rampcycle = 0; rampcycle < 255; rampcycle++) {
-	    for (i = 0; i < NMOTORS; i++) {		
-                // both buttons pressed
-		if (motor[i].bu && motor[i].bd) {
-		    led_on();
-\		    motor[i].trgspeed = 0;
-		}
-
-		// either button pressed
-		if (motor[i].bu != motor[i].bd) {
-		    if (motor[i].counter > 0) {
-			motor[i].counter -= 1;
-		    } else {
-			// reset counter
-			motor[i].counter = motor[i].curspeed;
-			
-			// set dir
-			if (motor[i].bu) {
-			    motor_set_dir(i, DIR_UP);
-			} else /* if (motor[i].bd) */ {
-			    motor_set_dir(i, DIR_DOWN);
+	for (ramp = 0; ramp < 16; ramp++) {
+	    for (cycle = 0; cycle < 255; cycle++) {
+		for (i = 0; i < NMOTORS; i++) {		
+		    // both buttons pressed
+		    if (motor[i].bu && motor[i].bd) {
+			led_on();
+			motor[i].trgspeed = 0;
+		    }
+		    
+		    // either button pressed
+		    if (motor[i].bu != motor[i].bd) {
+			if (motor[i].counter > 0) {
+			    motor[i].counter -= 1;
+			} else {
+			    // reset counter
+			    motor[i].counter = motor[i].curspeed;
+			    
+			    // set dir
+			    if (motor[i].bu) {
+				motor_set_dir(i, DIR_UP);
+			    } else /* if (motor[i].bd) */ {
+				motor_set_dir(i, DIR_DOWN);
+			    }
+			    
+			    motor_step(i);
 			}
-			
-			motor_step(i);
 		    }
 		}
 	    }
