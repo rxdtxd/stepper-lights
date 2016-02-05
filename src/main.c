@@ -21,18 +21,6 @@ uint16_t speed[5]; // TODO: can be factored out
 uint16_t counter[5];
 
 
-// FIXME: move to separate file for reuse
-// FIXME: cycle overhead is huge for _delay_us()
-void fake_delay (uint16_t times) {
-    volatile uint16_t i;
-    for (i = 0; i < times; i++) {
-	// NOTE: DRV8825 datasheet specifies 4 us minimum step period,
-	// and 1.9 us minimum for either STEP high or STEP low
-	_delay_us(1); // FIXME: magicnum
-    }
-    return;
-}
-
 inline void motors_init (void) {
     set_output(MOTOR0_DDR, MOTOR0_STEP_DD);
     set_output(MOTOR0_DDR, MOTOR0_DIR_DD);
