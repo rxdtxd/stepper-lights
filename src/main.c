@@ -53,16 +53,16 @@ inline void motors_init (void) {
 inline void motor_set_dir (uint8_t motor, uint8_t dir) {
     if (dir == DIR_DOWN) {
 	if (motor == 0) { output_low(MOTOR0_PORT, MOTOR0_DIR); }
-	if (motor == 1) { output_low(MOTOR1_PORT, MOTOR1_DIR); }
-	if (motor == 2) { output_low(MOTOR2_PORT, MOTOR2_DIR); }
-	if (motor == 3) { output_low(MOTOR3_PORT, MOTOR3_DIR); }
-	if (motor == 4) { output_low(MOTOR4_PORT, MOTOR4_DIR); }
+	else if (motor == 1) { output_low(MOTOR1_PORT, MOTOR1_DIR); }
+	else if (motor == 2) { output_low(MOTOR2_PORT, MOTOR2_DIR); }
+	else if (motor == 3) { output_low(MOTOR3_PORT, MOTOR3_DIR); }
+	else if (motor == 4) { output_low(MOTOR4_PORT, MOTOR4_DIR); }
     } else {
 	if (motor == 0) { output_high(MOTOR0_PORT, MOTOR0_DIR); }
-	if (motor == 1) { output_high(MOTOR1_PORT, MOTOR1_DIR); }
-	if (motor == 2) { output_high(MOTOR2_PORT, MOTOR2_DIR); }
-	if (motor == 3) { output_high(MOTOR3_PORT, MOTOR3_DIR); }
-	if (motor == 4) { output_high(MOTOR4_PORT, MOTOR4_DIR); }
+	else if (motor == 1) { output_high(MOTOR1_PORT, MOTOR1_DIR); }
+	else if (motor == 2) { output_high(MOTOR2_PORT, MOTOR2_DIR); }
+	else if (motor == 3) { output_high(MOTOR3_PORT, MOTOR3_DIR); }
+	else if (motor == 4) { output_high(MOTOR4_PORT, MOTOR4_DIR); }
     }
     
     return;
