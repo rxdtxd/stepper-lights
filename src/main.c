@@ -153,10 +153,10 @@ int main (void) {
 	    // ADC port (PORTC proper, port "A" in weirdoland) reversed,
 	    // so had to improvise with jumpers on the board
 	    if (motor == 0) speed[motor] = adc_read(6);
-	    if (motor == 1) speed[motor] = adc_read(1);
-	    if (motor == 2) speed[motor] = adc_read(2);
-	    if (motor == 3) speed[motor] = adc_read(3);
-	    if (motor == 4) speed[motor] = adc_read(7);
+	    else if (motor == 1) speed[motor] = adc_read(1);
+	    else if (motor == 2) speed[motor] = adc_read(2);
+	    else if (motor == 3) speed[motor] = adc_read(3);
+	    else if (motor == 4) speed[motor] = adc_read(7);
 	    
 	    // set dir
 	    if (pressed(bu, motor) && !pressed(bd, motor)) {
