@@ -147,6 +147,8 @@ int main (void) {
     adc_start();
 
     while (1) {
+	led_off();
+	
 	// keep the ADC running "in background"
 	if ( !( adc_is_running() )) {
 	    motor[adcchan].pot = adc_get();
@@ -179,6 +181,12 @@ int main (void) {
 	    motor[i].bu = bit_is_set(bu, i) ? true : false;
 	    motor[i].bd = bit_is_set(bd, i) ? true : false;
 
+	    // both buttons pressed
+	    if (motor[i].bu && motor[i].bd) {
+		led_on();
+		motor[i].trgspeed = SPEEDMIN;
+	    }
+	    
 	    if (motor[i].bu != motor[i].bd) {
 		motor[i].isrunning = true;
 		
@@ -195,8 +203,7 @@ int main (void) {
 		motor[i].isrunning = false;
 	    }
 	}
-	
-	led_off();
+       
 
 	for (ramp = 0; ramp < RAMPCYCLES; ramp++) {
 	    // push current speed towards target
@@ -211,21 +218,13 @@ int main (void) {
 	    
 	    for (cycle = 0; cycle < RUNCYCLES; cycle++) {
 		for (i = 0; i < NMOTORS; i++) {		
-		    // both buttons pressed
-		    if (motor[i].bu && motor[i].bd) {
-			led_on();
-			motor[i].trgspeed = SPEEDMIN;
-		    }
-		    
 		    // either button pressed or ramp-down
-		    if ((motor[i].bu != motor[i].bd) ||
-			(motor[i].isrunning)) {
+		    if (motor[i].isrunning) {
 			if (motor[i].counter > 0) {
 			    motor[i].counter -= 1;
 			} else {
 			    // reset counter
 			    motor[i].counter = motor[i].curspeed;
-			    			    
 			    motor_step(i);
 			}
 		    }
