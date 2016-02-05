@@ -149,7 +149,7 @@ int main (void) {
     while (1) {
 	// keep the ADC running in background
 	if ( !( adc_is_running() )) {
-	    speed[adcchan] = adc_get();
+	    speed[adcchan] = motor_adj_speed(adc_get());
 
 	    adcchan++;
 	    if (adcchan >= 5) adcchan = 0;
@@ -192,7 +192,7 @@ int main (void) {
 			counter[motor] -= 1;
 		    } else {
 			// reset counter
-			counter[motor] = motor_adj_speed(speed[motor]);
+			counter[motor] = speed[motor];
 			
 			// set dir
 			if (pressed(bu, motor)) {
