@@ -12,8 +12,8 @@
 /* #include "uart.h" // debug terminal */
 
 
-#define SPEEDMIN 20 //135
-#define SPEEDMAX 380 //1023 //800
+#define SPEEDMIN 10 //20
+#define SPEEDMAX 100 //380
 #define SPEEDRANGE (SPEEDMAX-SPEEDMIN)
 
 #define DIR_DOWN 0
@@ -124,6 +124,7 @@ inline bool pressed (uint8_t buttons, uint8_t motor) {
 int main (void) {
     uint8_t bu, bd;  // buttons up, buttons down
     uint8_t motor;   // iterator
+    uint8_t times;   // iterator
     // motor desired speed and countdown timer for STEP
     uint16_t speed[5];
     uint16_t counter[5];
@@ -172,34 +173,36 @@ int main (void) {
 
 	led_off();
 
-	for (motor = 0; motor < 5; motor++) {
-	    // not pressed
-	    if (!pressed(bu, motor) && !pressed(bd, motor)) {
-		continue;
-	    }
-
-	    // both pressed
-	    if (pressed(bu, motor) && pressed(bd, motor)) {
-		led_on();
-		continue;
-	    }
-	    
-	    // up or down pressed
-	    if (pressed(bu, motor) != pressed(bd, motor)) {
-		if (counter[motor] > 0) {
-		    counter[motor] -= 1;
-		} else {
-		    // reset counter
-		    counter[motor] = motor_adj_speed(speed[motor]);
-
-		    // set dir
-		    if (pressed(bu, motor)) {
-			motor_set_dir(motor, DIR_UP);
-		    } else /* if (pressed(bd, motor) ) */ {
-			motor_set_dir(motor, DIR_DOWN);
+	for (times = 0; times < 255; times++) {
+	    for (motor = 0; motor < 5; motor++) {
+		// not pressed
+		if (!pressed(bu, motor) && !pressed(bd, motor)) {
+		    continue;
+		}
+		
+		// both pressed
+		if (pressed(bu, motor) && pressed(bd, motor)) {
+		    led_on();
+		    continue;
+		}
+		
+		// up or down pressed
+		if (pressed(bu, motor) != pressed(bd, motor)) {
+		    if (counter[motor] > 0) {
+			counter[motor] -= 1;
+		    } else {
+			// reset counter
+			counter[motor] = motor_adj_speed(speed[motor]);
+			
+			// set dir
+			if (pressed(bu, motor)) {
+			    motor_set_dir(motor, DIR_UP);
+			} else /* if (pressed(bd, motor) ) */ {
+			    motor_set_dir(motor, DIR_DOWN);
+			}
+			
+			motor_step(motor);
 		    }
-
-		    motor_step(motor);
 		}
 	    }
 	}
