@@ -128,6 +128,10 @@ inline bool pressed (uint8_t buttons, uint8_t motor) {
 int main (void) {
     uint8_t motor;
     uint8_t bu, bd;  // buttons up, buttons down
+
+    for (motor = 0; motor < 5; motor++) {
+	counter[motor] = 0;
+    }
     
     led_init();
     spi_init();
@@ -137,10 +141,6 @@ int main (void) {
     /* // debug */
     /* uart_init(); */
     /* stdout = &uart_output; */
-
-    for (motor = 0; motor < 5; motor++) {
-	counter[motor] = 0;
-    }
     
     while (1) {
 	// read from buttons into shift registers ...
@@ -153,16 +153,18 @@ int main (void) {
 	led_off();
 
 	for (motor = 0; motor < 5; motor++) {
+	    // not pressed
 	    if (!pressed(bu, motor) && !pressed(bd, motor)) {
 		continue;
 	    }
 
+	    // both pressed
 	    if (pressed(bu, motor) && pressed(bd, motor)) {
 		led_on();
 		continue;
 	    }
-	    	    
-	    // 
+	    
+	    // up or down pressed
 	    if (pressed(bu, motor) != pressed(bd, motor)) {
 		if (counter[motor] > 0) {
 		    counter[motor] -= 1;
