@@ -17,17 +17,25 @@
 #define RUNCYCLES 1024
 
 // SPEED is a misnomer - it's actually the "period" between STEPs
+// SPEEDMAX and SPEEDMIN have been switched places to reduce confusion
+// in-code
 #define SPEEDMAX 10
 #define SPEEDMIN 100
 #define SPEEDRANGE (SPEEDMIN-SPEEDMAX)
 
+// maximum ADC-read value (depends on bit-resolution in adc_init())
+#define POTMAX 1023
+
 inline uint16_t motor_scale_speed (uint16_t potval) {
     uint32_t tmp;
 
+    // HACK: pots soldered backwads on board
+    potval = POTMAX - potval;
+    
     // avoid stepper resonance regions (determined experimentally)
     tmp = (uint32_t)potval * SPEEDRANGE;
-    potval = SPEEDMAX + (uint16_t)(tmp / 1023);
-    
+    potval = SPEEDMAX + (uint16_t)(tmp / POTMAX);
+
     return potval;
 }
 
@@ -163,7 +171,7 @@ int main (void) {
 	    adcchan++;
 	    if (adcchan >= 5) adcchan = 0;
 
-	    // HACK with lame jumpers
+	    // HACK: lame jumpers
 	    if (adcchan == 0) adc_set_chan(6);
 	    if (adcchan == 1) adc_set_chan(1);
 	    if (adcchan == 2) adc_set_chan(2);
