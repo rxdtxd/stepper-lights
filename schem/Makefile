@@ -1,18 +1,13 @@
-REMOVE=rm -f
+SCHEMATICS := controller driver
 
-# TODO: just look at it!
 bom:
-	gnetlist -g partslist3 -o controller.bom controller.sch
-	column -t -s'	' controller.bom > tmp.bom
-	mv tmp.bom controller.bom
-	gnetlist -g partslist3 -o driver.bom driver.sch
-	column -t -s'	' driver.bom > tmp.bom
-	mv tmp.bom driver.bom
+	$(foreach s,$(SCHEMATICS),gnetlist -g partslist3 -o $(s).bom $(s).sch;)
+	$(foreach s,$(SCHEMATICS),column -t -s'	' $(s).bom > $(s).tmp;)
+	$(foreach s,$(SCHEMATICS),mv $(s).tmp $(s).bom;)
 
 clean:
-	$(REMOVE) *.bak *.bak0 *.bak1 *.pcb\- *.sch\~
+	rm -f *.bak *.bak0 *.bak1 *.pcb\- *.sch\~
 
 gerber:
-	pcb -x gerber controller.pcb
-	pcb -x gerber driver.pcb
+	$(foreach s,$(SCHEMATICS),pcb -x gerber $(s).pcb;)
 	mv *.gbr *.cnc fab/
