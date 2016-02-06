@@ -10,5 +10,5 @@ Some mechanical components are not listed:
 * push-buttons (OFF-(ON))
 * power supply (24 V, 2+ A)
 * power switch (OFF-ON)
-* cooling fan
-* UTP cables
+* cooling fans (24 V)
+* CAT6 cables and RJ45 connectors

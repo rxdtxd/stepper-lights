@@ -49,8 +49,8 @@ uart.{c,h} + routines.
 Should have "swapped" some pairs for easier PCB layout (RS422 converters
 have swapped outputs, too).
 
-Using Neutrik [ne8mc-1](NE8MC-1 cable connectors) and [ne8fbh](NE8FBH
-PCB receptacles).
+Using Neutrik [NE8MC-1 cable connectors](ne8mc-1) and [NE8FBH PCB
+receptacles](ne8fbh).
 
 [t568b](T568B) wiring.
 
