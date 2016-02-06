@@ -12,3 +12,10 @@ Some mechanical components are not listed:
 * power switch (OFF-ON)
 * cooling fans (24 V)
 * CAT6 cables and RJ45 connectors
+
+
+## License
+
+Software in [src](src/) is licensed under [GPLv3](src/LICENSE). Hardware
+designs in [schem](schem/) are licensed under [CERN OHL
+v1.2](schem/LICENSE).
