@@ -60,6 +60,13 @@ receptacles](ne8fbh).
 "Defaultish" Arduino Nano clone: 0.025 A (0.6 W) on power supply at 24 V.
 7805 heats up to 50 oC in a minute. 65 oC in 5 minutes.
 
+
+# Makefile
+
+Check out [skeleton](bgamari's Makefile)!
+
+
 [ne8mc-1]: http://www.neutrik.com/en/industrial/ethercon/ethercon-cable-connector-carrier/ne8mc-1
 [ne8fbh]: http://www.neutrik.com/en/industrial/ethercon/b-series/ne8fbh
 [t568b]: https://en.wikipedia.org/wiki/Category_5_cable
+[makefile]: https://github.com/bgamari/skeleton-geda-project/blob/master/Makefile
