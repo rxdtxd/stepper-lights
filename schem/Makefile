@@ -1,7 +1,7 @@
 SCHEMATICS := controller driver
 
 .PHONY: all
-all: bom gerber
+all: bom gerber png
 
 .PHONY: bom
 bom:
@@ -17,3 +17,6 @@ clean:
 gerber:
 	$(foreach s,$(SCHEMATICS),pcb -x gerber $(s).pcb;)
 	mv *.gbr *.cnc fab/
+
+png:
+	$(foreach s,$(SCHEMATICS),gaf export --color --size=auto --output=$(s).png $(s).sch;)
