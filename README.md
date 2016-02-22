@@ -1,5 +1,13 @@
 # stepper-lights
 
+## Custom symbols/footprints
+
+...used in this project are available in my
+[symbols](https://github.com/rxdtxd/geda-gschem-symbols-rxdtxd) and
+[footprints](https://github.com/rxdtxd/geda-pcb-footprints-rxdtxd)
+repos.
+
+
 ## BOM
 
 See [controller.bom](schem/controller.bom) and
