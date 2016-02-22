@@ -1,11 +1,11 @@
 # stepper-lights
 
-## Custom symbols/footprints
+## Using
 
-...used in this project are available in my
-[symbols](https://github.com/rxdtxd/geda-gschem-symbols-rxdtxd) and
-[footprints](https://github.com/rxdtxd/geda-pcb-footprints-rxdtxd)
-repos.
+## Schematics
+
+See [controller.png](schem/controller.png) and
+[driver.png](schem/driver.png).
 
 
 ## BOM
@@ -21,6 +21,16 @@ Some mechanical components are not listed:
 * cooling fans (24 V)
 * CAT6 cables and RJ45 connectors
 
+
+
+## Modifying
+
+## Custom symbols/footprints
+
+...used in this project are available in my
+[symbols](https://github.com/rxdtxd/geda-gschem-symbols-rxdtxd) and
+[footprints](https://github.com/rxdtxd/geda-pcb-footprints-rxdtxd)
+repos.
 
 ## License
 
