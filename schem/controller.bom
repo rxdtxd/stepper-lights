@@ -3,7 +3,7 @@
 74165                unknown  DIP16                   2         U21 U22
 7805                 unknown  TO220SW                 1         U2
 AM26C31              unknown  DIP16                   3         U11 U12 U13
-ARDUINO_NANO_V3      unknown  arduino_nano_header.fp  1         U?
+ARDUINO_NANO_V3      unknown  arduino_nano_header.fp  1         U1
 CAPACITOR            100n     ACY200                  12        C1 C11 C12 C13 C21 C22 C4 C5 C6 C7 C8 C9
 CONNECTOR_2          unknown  TERMSCREW1_2.fp         1         CONN_POWER
 LED                  red      DIODE_LAY 300           1         D1
