@@ -1,22 +1,21 @@
-SCHEMATICS := controller driver
+SCHEMATICS := controller.sch driver.sch
 
-.PHONY: all
-all: bom gerber png
+.PHONY: all clean fab
 
-.PHONY: bom
-bom:
-	$(foreach s,$(SCHEMATICS),gnetlist -g partslist3 -o $(s).bom $(s).sch;)
-	$(foreach s,$(SCHEMATICS),column -t -s'	' $(s).bom > $(s).tmp;)
-	$(foreach s,$(SCHEMATICS),mv $(s).tmp $(s).bom;)
+all: $(SCHEMATICS:.sch=.bom) $(SCHEMATICS:.sch=.png) fab
 
-.PHONY: clean
 clean:
-	rm -f *.bak *.bak0 *.bak1 *.pcb\- *.sch\~
+	-rm -f *.bak *.bak0 *.bak1 *.pcb\- *.sch\~
 
-.PHONY: gerber
-gerber:
-	$(foreach s,$(SCHEMATICS),pcb -x gerber $(s).pcb;)
+%.bom: %.sch
+	gnetlist -g partslist3 -o $@ -- $<
+	column -t -s'	' $@ > $@.tmp
+	mv $@.tmp $@
+
+%.png: %.sch
+	gaf export -c -s auto -o $@ -- $<
+
+fab:
+	mkdir -p fab
+	$(foreach s,$(SCHEMATICS:.sch=.pcb),pcb -x gerber $(s);)
 	mv *.gbr *.cnc fab/
-
-png:
-	$(foreach s,$(SCHEMATICS),gaf export --color --size=auto --output=$(s).png $(s).sch;)
