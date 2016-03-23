@@ -30,6 +30,23 @@ However, in the spirit of megalomania, I hereby release the files
 under free licenses (for which see the bottom).
 
 
+### Overview
+
+There are two parts to the system: `controller` and `driver`:
+
+```
+             +-> driver
+	     |
+             +-> driver
+	     |
+controller >-+-> driver
+	     |
+             +-> driver
+	     |
+	     +-> driver
+```
+
+
 ### Schematics
 
 See [controller.png](schem/controller.png) and
