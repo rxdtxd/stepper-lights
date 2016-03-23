@@ -1,5 +1,21 @@
 # stepper-lights
 
+## Table of Contents
+
+* [Intro](#intro)
+* [Using](#using)
+  - [Warning](#warning)
+  - [Overview](#overview)
+  - [Schematics](#schematics)
+  - [BOM](#bom)
+  - [Fabrication files](#fabrication-files)
+* [Modifying](#modifying)
+  - [Toolchain](#toolchain)
+  - [Custom symbols/footprints](#custom-symbolsfootprints)
+* [Notes](#notes)
+* [License](#license)
+
+
 ## Intro
 
 Here's a project I did in early 2016 on controlling five stepper
@@ -98,13 +114,13 @@ Note that these may have changed from the time they were used in the
 project. I hope I was decent enough to change `symver`s and whatnot if
 so.
 
-### Notes
+## Notes
 
 Some more unordered documentation is available in the [NOTES](NOTES)
 file.
 
 
-### License
+## License
 
 Software in [src](src/) is licensed under [GPLv3](src/LICENSE). Hardware
 designs in [schem](schem/) are licensed under [CERN OHL
