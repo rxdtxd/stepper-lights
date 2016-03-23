@@ -35,12 +35,12 @@ impromptu fixes that were not propagated back to the design files.
 
 Most notably, the used Arduino Nano symbol had its ADC pin order
 reversed on the manufactured boards ([rev0.1](releases/tag/rev0.1)).
-This required both hardware jumpering and software muckery, much
+This required both hardware jumpering and software muckery, somewhat
 reflected in [rev0.2](releases/tag/rev0.2).
 
 Furthermore, the overall design leaves much to be desired. With
-the current prices for Arduino Nano clones, this should have been
-a one-AVR-one-driver schematic.
+the current prices for Arduino Nano clones, **this should have been
+a one-AVR-one-driver schematic**.
 
 However, in the spirit of megalomania, I hereby release the files
 under free licenses (for which see the bottom).
@@ -62,8 +62,9 @@ controller --+-> driver
              +-> driver
 ```
 
-Communication is essentially single-directional SPI, with the
-driver transmitting back a dummy message (i.e. no feedback).
+Communication is essentially single-directional SPI over RS422,
+with the driver transmitting back a dummy message (i.e. no
+feedback).
 
 
 ### Schematics
@@ -99,6 +100,9 @@ The design files were produced on a [Arch](https://www.archlinux.org/)
 GNU/Linux machine using [geda/gaf](http://www.geda-project.org/),
 [pcb](http://pcb.geda-project.org/) and
 [Emacs](https://www.gnu.org/software/emacs/).
+
+AVR sources are built with [avr-gcc](https://gcc.gnu.org/). Arduino
+is flashed with [avrdude](http://www.nongnu.org/avrdude/).
 
 There are Makefiles for both schematics and code. Happy hacking!
 
