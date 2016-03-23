@@ -36,15 +36,18 @@ There are two parts to the system: `controller` and `driver`:
 
 ```
              +-> driver
-	     |
+             |
              +-> driver
-	     |
-controller >-+-> driver
-	     |
+             |
+controller --+-> driver
+             |
              +-> driver
-	     |
-	     +-> driver
+             |
+             +-> driver
 ```
+
+Communication is essentially single-directional SPI, with the
+driver transmitting back a dummy message (i.e. no feedback).
 
 
 ### Schematics
