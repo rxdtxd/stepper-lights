@@ -11,6 +11,9 @@ buttons and a potentiometer to control the speed.
 
 ### Warning
 
+**I strongly suggest you do not try to recreate it verbatim, and use
+as a guide at best.**
+
 The schematics/layouts contained numerous glitches and therefore
 impromptu fixes that were not propagated back to the design files.
 
@@ -22,9 +25,6 @@ reflected in [rev0.2](releases/tag/rev0.2).
 Furthermore, the overall design leaves much to be desired. With
 the current prices for Arduino Nano clones, this should have been
 a one-AVR-one-driver schematic.
-
-I strongly suggest you do not try to recreate it verbatim, and use
-as a guide at best.
 
 However, in the spirit of megalomania, I hereby release the files
 under free licenses (for which see the bottom).
